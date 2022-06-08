@@ -1,6 +1,7 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
 const { deployDai, deployDaiBank, deployContract } = require("../scripts/deployContracts");
+const { parseEventValue, parseEventValueII } = require("../scripts/utils")
 
 
 describe("CreatePost", async function () {
@@ -17,7 +18,7 @@ describe("CreatePost", async function () {
         // Deploy Contracts
         dai = await deployContract("DAI")
         bank = await deployContract("DAIBank", [dai.address])
-        createPost = await deployContract("ExecutablePost")
+        createPost = await deployContract("ExecutablePost", [dai.address])
 
         //transfer DAI
         await dai.faucet(partyA.address, 1000)
@@ -29,15 +30,25 @@ describe("CreatePost", async function () {
         balance = await dai.myBalanceOf(partyA.address)
         expect(balance).to.equal(1000)
     })
+    it("Party A Should allow contract to spend 1000 DAI", async function () {
+        const promise = await dai.connect(partyA).approve(createPost.address, 1000)
+        await promise.wait()
+        const allowance = await bank.allowance(partyA.address, createPost.address)
+        expect(allowance).to.equal(1000)
+    })
 
-    it("Should return a struct", async function () {
+    it("Should create a contract", async function () {
 
-        const newPostTx = await createPost.createContract(partyA.address, partyB.address, 1000, 10);
+        const newPostTx = await createPost.createContract(partyA.address, partyB.address, 1, 1000);
         const newPostReceipt = await newPostTx.wait();
+        const contractID = parseEventValue(newPostReceipt, "ContractID")[0]
 
-        const contractID = newPostReceipt.events[0].args["ContractID"]
+        expect(contractID.length).to.greaterThan(1)
 
         const getContractStructTx = await createPost.getContractMapping(contractID)
         expect(getContractStructTx.partyA).to.equal(partyA.address)
+
     })
+
+
 })
