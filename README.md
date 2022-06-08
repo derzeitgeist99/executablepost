@@ -34,3 +34,20 @@ Let's build this step by step
 ➕➕➕ Add Oracles to evaluate contract
 
 ➕➕➕➕ Add more smart contract resolution modes (followers voting, ?)
+
+## Prototope: Definition of Done
+
+### Elements
+
+- Front End
+- Smart Contract
+- Connection to Lens API to post
+
+### Front End Functionality (visible to user)
+
+- Post
+  - Input: Message, Beneficiary Address, Benefactor Address, TimeFrame, Amount (DAI)
+  - Result: Post is visible on Lenster, contract is saved
+- Resolve
+  - Input: Beneficiary or Benefactor, message
+  - Result: Comment with the result is visible on Lenster, money is transferred
