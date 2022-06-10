@@ -1,0 +1,38 @@
+const chai = require("chai");
+const { ethers } = require("hardhat");
+const { deployContract } = require("../scripts/deployContracts");
+
+const expect = chai.expect
+
+
+describe("Test DAI Bank", async function () {
+    let partyA = undefined
+    let dai = undefined
+    let bank = undefined
+    let createPost = undefined
+
+    before(async () => {
+        // Get Addresses
+        [partyA, _] = await ethers.getSigners()
+
+        // Deploy Contracts
+        dai = await deployContract("DAI")
+        bank = await deployContract("DAIBank", [dai.address])
+        createPost = await deployContract("ExecutablePost", [dai.address])
+
+        //transfer DAI
+        await dai.faucet(partyA.address, 1000)
+
+    })
+    it("Party A Should have 1000 DAI", async function () {
+        balance = await dai.myBalanceOf(partyA.address)
+        expect(balance).to.equal(1000)
+    })
+
+    it("Party A Should allow contract to spend 1000 DAI", async function () {
+        const promise = await dai.connect(partyA).approve(createPost.address, 1000)
+        await promise.wait()
+        const allowance = await bank.allowance(partyA.address, createPost.address)
+        expect(allowance).to.equal(1000)
+    })
+})

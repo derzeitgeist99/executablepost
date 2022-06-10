@@ -13,7 +13,8 @@ contract ExecutablePost {
     event ContractID(bytes32 indexed ContractID);
 
 // Errors
-    error insufficientFunds(uint available, uint allowance, uint required);
+    error insufficientBalance(uint balance, uint allowance, uint required);
+    error insufficientAllowance(uint balance, uint allowance, uint required);
 
 // Structs
     struct PostContract {
@@ -39,11 +40,18 @@ contract ExecutablePost {
 // Logic!
 
 function createContract (address _partyA, address _partyB, uint256 _resolveAfter, uint256 _amount) external {
-console.log("Allowed Amount %s", dai.allowance(msg.sender, address(this)) );
-console.log("Balance %s", dai.balanceOf(msg.sender));
-console.log(" Amount %s", _amount );
-    if (dai.allowance(msg.sender, address(this)) < _amount) {
-        revert insufficientFunds({available: 100,allowance: 100, required: 100});
+// console.log("Allowed Amount %s", dai.allowance(msg.sender, address(this)) );
+// console.log("Balance %s", dai.balanceOf(msg.sender));
+// console.log(" Amount %s", _amount );
+uint DAIallowance = dai.allowance(msg.sender, address(this));
+uint DAIbalance = dai.balanceOf(msg.sender);
+
+
+    if (DAIallowance < _amount) {
+        revert insufficientAllowance({balance: DAIbalance,allowance: DAIallowance, required: _amount});
+    }
+    if (DAIbalance < _amount) {
+        revert insufficientBalance({balance: DAIbalance,allowance: DAIallowance, required: _amount});
     }
 
     PostContract memory myPostContract;
@@ -55,18 +63,16 @@ console.log(" Amount %s", _amount );
 
     bytes32 id = keccak256(abi.encodePacked(block.timestamp));
 
-    console.log("Before Transfer");
     dai.transferFrom(msg.sender,address(this), _amount);
-    console.log("After Transfer");
+
 
     contractMapping[id] = myPostContract;
     allContractsOfAddress[msg.sender].push(id);
 
     emit ContractID(id);
-    emit ContractID(id);
 
-    console.log("Balance at the End %s", dai.balanceOf(msg.sender));
-    console.log("contract Balance at the End %s", dai.balanceOf(address(this)));
+    // console.log("Balance at the End %s", dai.balanceOf(msg.sender));
+    // console.log("contract Balance at the End %s", dai.balanceOf(address(this)));
 
 }
 
@@ -74,7 +80,7 @@ function getContractMapping (bytes32 _id) external view returns (PostContract  m
     return contractMapping[_id];
 }
 
-function getAllContractOfAddress (address _address) external view returns (bytes32 [] memory){
+function getAllContractsOfAddress (address _address) external view returns (bytes32 [] memory){
     return allContractsOfAddress[_address];
 }
 
