@@ -97,6 +97,6 @@ describe("CreatePost", async function () {
     })
 
 
-    it("Tx should fail because... ")
+    it("Tx should fail because.... ")
 
 })
