@@ -103,6 +103,11 @@ uint DAIbalance = dai.balanceOf(msg.sender);
          revert resolvePeriodNotPassed({currentBlockTimeStamp: block.timestamp, resolveAfter: myPostContract.resolveAfter });
      }
 
+     contractMapping[_contractID].redeemed = true;
+
+     dai.transfer(myPostContract.partyA, myPostContract.amount * _partyAResult /100);
+     dai.transfer(myPostContract.partyB, myPostContract.amount * _partyBResult /100);
+
 
  }
 

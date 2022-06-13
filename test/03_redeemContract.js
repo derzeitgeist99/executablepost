@@ -1,7 +1,7 @@
 const chai = require("chai");
 const { ethers } = require("hardhat");
 const { deployContract } = require("../scripts/deployContracts");
-const { parseEventValue, expectCreateContractToBeRejected, expectRedeemContractToBeRejected } = require("../scripts/utils")
+const { parseEventValue, expectCreateContractToBeRejected, expectRedeemContractToBeRejected, getDAIBalances } = require("../scripts/utils")
 
 const expect = chai.expect
 
@@ -55,33 +55,34 @@ describe("RedeemPost", async function () {
         }
     })
 
+    it("Should redeem a contract and check balances of contract, partyA, partyB", async () => {
+        const partyAResult = 50
+        const partyBResult = 50
+
+        const addressesToTest = [partyA.address, partyB.address, createPost.address]
+
+        const initialBalances = await getDAIBalances(dai, addressesToTest)
+
+        await network.provider.send("evm_increaseTime", [waitSeconds + 1])
+
+        const newRedeemTx = await createPost.connect(partyA).resolveByMsgSender(partyAResult, partyBResult, contractID)
+        const receipt = await newRedeemTx.wait()
 
 
-    it("Should redeem a contract and check balances of contract, partyA, partyB",
-        // async () => {
-        // const partyAResult = 50
-        // const partyBResult = 50
+        const endingBalances = await getDAIBalances(dai, addressesToTest)
 
-        // const newRedeemTx = await createPost.connect(partyA).resolveByMsgSender(partyAResult, partyBResult, contractID)
-        // const receipt = await newRedeemTx.wait()
-        // const blockTimestamp = (await (ethers.provider.getBlock(receipt.blockHash))).timestamp
-        // console.log("number", blockTimestamp);
+        //party A
+        expect(initialBalances[0] + (amount * partyAResult / 100)).to.equal(endingBalances[0])
+        //party B
+        expect(initialBalances[1] + (amount * partyBResult / 100)).to.equal(endingBalances[1])
+        //contract
+        expect(initialBalances[2] - amount).to.equal(endingBalances[2])
 
+        // check if redeemed status is true
+        const contractStruct = await createPost.getContractMapping(contractID)
+        expect(contractStruct.redeemed).to.be.true
 
-        // const partyA_balance = await dai.balanceOf(partyA.address)
-        // expect(partyA_balance).to.equal(partyAResult * amount / 100)
-        // }
-    )
+    })
 
-    it("Should redeem a contract",
-        // async () => {
-        // const newRedeemTx = await createPost.connect(partyA).resolveByMsgSender(50, 50, contractID)
-        // newRedeemTx.wait()
-        // const getContractStructTx = await createPost.getContractMapping(contractID)
-        // expect(getContractStructTx.redeemed).to.be.true
-
-        //}
-    )
-    it("Should multiple contracts and check balances of contract, partyA, partyB")
 
 })

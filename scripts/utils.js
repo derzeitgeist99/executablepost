@@ -1,6 +1,7 @@
 const chai = require("chai");
 const chaiAsPromised = require("chai-as-promised")
 
+
 const expect = chai.expect
 chai.use(chaiAsPromised)
 
@@ -25,12 +26,28 @@ const expectCreateContractToBeRejected = async (sender, createPost, partyA, part
 
 const expectRedeemContractToBeRejected = async (sender, createPost, partyAResult, partyBResult, contractID, errorMessage) => {
     const receipt = await expect(createPost.connect(sender).resolveByMsgSender(partyAResult, partyBResult, contractID)).to.be.rejectedWith(errorMessage)
+    // redeemed status must remain false after revert
+    const contractStruct = await createPost.getContractMapping(contractID)
+    expect(contractStruct.redeemed).to.be.false
     return receipt
+
+}
+
+const getDAIBalances = async (contract, addresses) => {
+
+    let balances = []
+    for (let address of addresses) {
+        let balance = await contract.balanceOf(address)
+        balances.push(balance.toNumber())
+
+    }
+    return balances
 
 }
 
 module.exports = {
     parseEventValue,
     expectCreateContractToBeRejected,
-    expectRedeemContractToBeRejected
+    expectRedeemContractToBeRejected,
+    getDAIBalances
 }

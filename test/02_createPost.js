@@ -42,8 +42,8 @@ describe("CreatePost", async function () {
 
             expect(contractID.length).to.greaterThan(1)
 
-            const getContractStructTx = await createPost.getContractMapping(contractID)
-            expect(getContractStructTx.partyA).to.equal(partyA.address)
+            const contractStruct = await createPost.getContractMapping(contractID)
+            expect(contractStruct.partyA).to.equal(partyA.address)
         }
 
     })
@@ -58,8 +58,8 @@ describe("CreatePost", async function () {
 
             expect(contractID.length).to.greaterThan(1)
 
-            const getContractStructTx = await createPost.getContractMapping(contractID)
-            expect(getContractStructTx.partyA).to.equal(partyA.address)
+            const contractStruct = await createPost.getContractMapping(contractID)
+            expect(contractStruct.partyA).to.equal(partyA.address)
         }
 
     })
@@ -75,8 +75,8 @@ describe("CreatePost", async function () {
 
             expect(contractID.length).to.greaterThan(1)
 
-            const getContractStructTx = await createPost.getContractMapping(contractID)
-            expect(getContractStructTx.partyA).to.equal(partyA.address)
+            const contractStruct = await createPost.getContractMapping(contractID)
+            expect(contractStruct.partyA).to.equal(partyA.address)
         }
         // third contract after allowance is depleted
         await expectCreateContractToBeRejected(partyA, createPost, partyA.address, partyB.address, 1, 1, "insufficientAllowance")
@@ -97,11 +97,11 @@ describe("CreatePost", async function () {
 
             expect(contractID.length).to.greaterThan(1)
 
-            const getContractStructTx = await createPost.getContractMapping(contractID)
-            expect(getContractStructTx.partyA).to.equal(partyA.address)
+            const contractStruct = await createPost.getContractMapping(contractID)
+            expect(contractStruct.partyA).to.equal(partyA.address)
             // testing resolve After
             const blockInfo = await (ethers.provider.getBlock(newPostReceipt.blockHash))
-            expect(blockInfo.timestamp + waitSeconds[i]).to.equal(getContractStructTx.resolveAfter)
+            expect(blockInfo.timestamp + waitSeconds[i]).to.equal(contractStruct.resolveAfter)
 
         }
     })
