@@ -18,9 +18,19 @@ const parseEventValue = (receipt, eventName, print = false) => {
 
 };
 
-const expectCreateContractToBeRejected = async (createPost, partyA, partyB, resolveAfter, amount, message) => {
-    await expect(createPost.createContract(partyA, partyB, resolveAfter, amount)).to.be.rejectedWith(message)
+const expectCreateContractToBeRejected = async (sender, createPost, partyA, partyB, resolveAfter, amount, errorMessage) => {
+    await expect(createPost.connect(sender).createContract(partyA, partyB, resolveAfter, amount)).to.be.rejectedWith(errorMessage)
 
 }
 
-module.exports = { parseEventValue, expectCreateContractToBeRejected }
+const expectRedeemContractToBeRejected = async (sender, createPost, partyAResult, partyBResult, contractID, errorMessage) => {
+    const receipt = await expect(createPost.connect(sender).resolveByMsgSender(partyAResult, partyBResult, contractID)).to.be.rejectedWith(errorMessage)
+    return receipt
+
+}
+
+module.exports = {
+    parseEventValue,
+    expectCreateContractToBeRejected,
+    expectRedeemContractToBeRejected
+}
