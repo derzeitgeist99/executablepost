@@ -1,5 +1,6 @@
 const chai = require("chai");
 const chaiAsPromised = require("chai-as-promised")
+const BN = require("bn.js");
 
 
 const expect = chai.expect
@@ -33,21 +34,47 @@ const expectRedeemContractToBeRejected = async (sender, createPost, partyAResult
 
 }
 
-const getDAIBalances = async (contract, addresses) => {
+const getDAIBalances = async (contract, addresses, BN = false) => {
 
     let balances = []
     for (let address of addresses) {
         let balance = await contract.balanceOf(address)
-        balances.push(balance.toNumber())
+
+        balances.push(BN ? balance : balance.toNumber())
 
     }
     return balances
 
 }
 
+const generateRandomBN = (max, min) => {
+    exponent = Math.floor(Math.random() * (max - min) + min)
+
+    a = Math.floor(Math.random() * (10 ** exponent))
+    b = Math.floor(Math.random() * (10 ** exponent))
+
+    return a.toString() + b.toString()
+
+}
+
+const shuffleArray = (array, desiredLength) => {
+    for (let i = array.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1))
+        let t = array[i]
+        array[i] = array[j]
+        array[j] = t
+
+
+    }
+    const keepArray = array.slice(0, desiredLength)
+    return keepArray
+}
+
 module.exports = {
     parseEventValue,
     expectCreateContractToBeRejected,
     expectRedeemContractToBeRejected,
-    getDAIBalances
+    getDAIBalances,
+    generateRandomBN,
+    shuffleArray
 }
