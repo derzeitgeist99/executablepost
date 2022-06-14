@@ -127,4 +127,5 @@ describe.only("Random Contract Actions", async function () {
 
     it("evm_increae time < 1000")
     it("no need to substract 1 from ending balance")
+    it("would be great to have logs and visualize them")
 })
