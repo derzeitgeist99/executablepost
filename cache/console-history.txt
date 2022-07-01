@@ -1,3 +1,50 @@
+x.toString()
+x.toString
+x = await hre.ethers.provider.getBalance("0x8C083165897e1B8a5cE46D2859B08fC35a951688")
+await hre.ethers.provider.getBalance("0x8C083165897e1B8a5cE46D2859B08fC35a951688")
+await hre.ethers.provider.getBalance(0x8C083165897e1B8a5cE46D2859B08fC35a951688)
+await hre.ethers.provider
+await hre.ethers.provider.getBlock("latest")
+await hre.ethers.provider.getBlock(latest)
+await hre.ethers.provider.getBlock(26871015)
+await hre.ethers.provider.getBlock(1)
+await ethers.provider.getBlock(1)
+x.toString()
+x.toNumber()
+x.toNumber
+x
+x = await ethers.provider.getBalance("0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec")
+const x = await ethers.provider.getBalance("0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec")
+await ethers.provider.getBalance("0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec")
+await ethers.provider.getBalance(0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec)
+await ethers.provider
+await ethers.provider.getBlock(1)
+(await hre.ethers.provider.getBlock(1))
+(await hre.ethers.provider.getBlock(26871000))
+(await hre.ethers.provider.getBlock(26871016))
+(await hre.ethers.provider.getBlock(26871016)).transactions
+await hre.ethers.provider.getBlock("26871016")
+await hre.ethers.provider.getBlock(26871016)
+await hre.ethers.provider.getBlock()
+await hre.ethers.provider.getBlock
+await hre.ethers.provider.getTransaction(0x15cf2c3afbc37543ccaa80fac19e57a3b091236befb90eb7076993801d7b7b62)
+await hre.ethers.provider.getTransaction("0x15cf2c3afbc37543ccaa80fac19e57a3b091236befb90eb7076993801d7b7b62")
+await hre.ethers.provider.getBlock()
+hre.ethers.provider.getBlock()
+hre.ethers.provider.getBlock
+hre.ethers.provider
+hre.network
+hre.network.config.chains
+hre.network.config
+hre.network
+eth_mining
+hre
+hre.network
+node
+.help
+node
+.exit
+hre.network
 ethers
 timers
 .help

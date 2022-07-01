@@ -70,11 +70,44 @@ const shuffleArray = (array, desiredLength) => {
     return keepArray
 }
 
+
+const whiteListViaLens = async (_address) => {
+    const fs = require('fs/promises');
+    const { exec } = require("child_process");
+
+    const content = JSON.stringify({ address: _address })
+
+    await fs.writeFile("/Users/andy/my_repos/Tutorials/lens-protocol/tasks/myTasks/addressToWhiteList.json", content);
+
+    exec("cd /Users/andy/my_repos/Tutorials/lens-protocol && npx hardhat white-list-profile-creator --network localhost ", (error, stdout, stderr) => {
+        if (error) {
+            console.log(`error: ${error.message}`);
+            return;
+        }
+        if (stderr) {
+            console.log(`stderr: ${stderr}`);
+            return;
+        }
+        console.log(`stdout: ${stdout}`);
+    });
+
+    const waiting = new Promise((resolve, reject) => {
+
+        setTimeout(() => resolve("done"), 5000)
+    })
+
+    result = await waiting
+
+    console.log(result);
+
+}
+
 module.exports = {
     parseEventValue,
     expectCreateContractToBeRejected,
     expectRedeemContractToBeRejected,
     getDAIBalances,
     generateRandomBN,
-    shuffleArray
+    shuffleArray,
+    whiteListViaLens
 }

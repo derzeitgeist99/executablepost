@@ -104,3 +104,8 @@ dist
 .tern-port
 
 Examples/
+
+gitignore/
+
+contracts/*tests/
+test/*tests

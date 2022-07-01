@@ -51,3 +51,6 @@ Let's build this step by step
 - Resolve
   - Input: Beneficiary or Benefactor, message
   - Result: Comment with the result is visible on Lenster, money is transferred
+
+### Contract structure
+<https://drive.google.com/file/d/1re4p-Wdj83DGirfMm1PanCWX833IBRNG/view?usp=sharing>

@@ -1,0 +1,13 @@
+{
+    "chainlink": {
+        "mumbai": {
+            "ETHUSD": "0x0715A7794a1dc8e42615F059dD6e406A6594651A",
+            "BTCUSD": "0x007A22900a3B98143368Bd5906f8E17e9867581b"
+        }
+    },
+    "lens": {
+        "local": {
+            "ILensHub": "0xEd23F92A36e60348AF2ba75CcBfE6c3aeDACd32D"
+        }
+    }
+}
