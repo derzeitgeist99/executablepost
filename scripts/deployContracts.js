@@ -6,6 +6,7 @@ async function deployContract(name, constructor = [], print = false, signer = fa
 
         const Contract = await hre.ethers.getContractFactory(name, "", signer)
 
+
         const contract = await Contract.deploy(...constructor, { gasLimit: 3000000 })
 
 

@@ -1,0 +1,91 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "IRBOwner",
+  "sourceName": "contracts/Modules/RBOwner.sol",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_partyA",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_partyB",
+          "type": "address"
+        }
+      ],
+      "name": "postRBOwner",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "partyA",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "partyB",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "timestamp",
+              "type": "uint256"
+            },
+            {
+              "internalType": "enum DataTypes.ResolveTypes",
+              "name": "resolvetype",
+              "type": "uint8"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint256",
+                  "name": "price",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct DataTypes.ResolveByOracleConditions",
+              "name": "resolveByOracleConditions",
+              "type": "tuple"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "string",
+                  "name": "price",
+                  "type": "string"
+                }
+              ],
+              "internalType": "struct DataTypes.ResolveByOwnerConditions",
+              "name": "resolveByOwnerConditions",
+              "type": "tuple"
+            }
+          ],
+          "internalType": "struct DataTypes.Post",
+          "name": "",
+          "type": "tuple"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "_Id",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

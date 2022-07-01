@@ -1,6 +1,8 @@
 const chai = require("chai");
 const chaiAsPromised = require("chai-as-promised")
 const BN = require("bn.js");
+const { ethers } = require("hardhat");
+
 
 
 const expect = chai.expect
@@ -70,37 +72,20 @@ const shuffleArray = (array, desiredLength) => {
     return keepArray
 }
 
+const getNamedSigners = async () => {
 
-const whiteListViaLens = async (_address) => {
-    const fs = require('fs/promises');
-    const { exec } = require("child_process");
+    const accounts = await ethers.getSigners()
 
-    const content = JSON.stringify({ address: _address })
+    governance = accounts[1]
+    user = accounts[2]
+    address3 = accounts[3]
+    address4 = accounts[4]
 
-    await fs.writeFile("/Users/andy/my_repos/Tutorials/lens-protocol/tasks/myTasks/addressToWhiteList.json", content);
 
-    exec("cd /Users/andy/my_repos/Tutorials/lens-protocol && npx hardhat white-list-profile-creator --network localhost ", (error, stdout, stderr) => {
-        if (error) {
-            console.log(`error: ${error.message}`);
-            return;
-        }
-        if (stderr) {
-            console.log(`stderr: ${stderr}`);
-            return;
-        }
-        console.log(`stdout: ${stdout}`);
-    });
-
-    const waiting = new Promise((resolve, reject) => {
-
-        setTimeout(() => resolve("done"), 5000)
-    })
-
-    result = await waiting
-
-    console.log(result);
-
+    return [governance, user, address3, address4]
 }
+
+
 
 module.exports = {
     parseEventValue,
@@ -109,5 +94,6 @@ module.exports = {
     getDAIBalances,
     generateRandomBN,
     shuffleArray,
-    whiteListViaLens
+    getNamedSigners,
+
 }

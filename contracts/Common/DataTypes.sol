@@ -1,0 +1,39 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.10;
+import 'hardhat/console.sol';
+
+library DataTypes {
+
+    error UserNotAllowed (string);
+
+    event postCreated (address indexed _party1, address indexed _partyB);
+    event idCreated (bytes32  _id);
+
+
+    enum ResolveTypes {
+        ResolveByOwner,
+        ResolveByOracle
+    }
+
+    struct Post {
+        address partyA;
+        address partyB;
+        address owner;
+        uint timestamp;
+
+        ResolveTypes resolvetype;
+        ResolveByOracleConditions resolveByOracleConditions;
+        ResolveByOwnerConditions resolveByOwnerConditions;
+        // I assume this is gas inefficient as it creates empty struct also for unused data.
+        // Tried mapping ,but that limit me in using modules as separate contracts
+
+    }
+
+    struct ResolveByOracleConditions {
+        uint price;
+    }
+
+        struct ResolveByOwnerConditions {
+        string price;
+    }
+}
