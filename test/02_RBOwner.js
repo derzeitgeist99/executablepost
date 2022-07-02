@@ -6,27 +6,31 @@ chai.use(chaiAsPromised)
 
 const { ethers } = require("hardhat");
 
-const { getNamedSigners, parseEventValue } = require("../scripts/utils");
-const contractAddresses = require("../addresses.json")
+const { getNamedSigners } = require("../scripts/utils");
+const { deployAllContracts } = require("../scripts/deployContracts");
+const { fundAllWithDai } = require("../scripts/fundAllwithDAI");
 
-const rbAbi = require("../artifacts/contracts/Modules/RBOwner.sol/RBOwner.json")
+
 
 describe("Testing postRBOwner", async () => {
+
     before(async () => {
-        const [governance, user, address3, addres4] = await getNamedSigners()
-        const rb = new ethers.Contract(contractAddresses["RBOwner"], rbAbi.abi)
+        ({ hub, rbOwner } = await deployAllContracts());
+        ({ governance, user, partyA, partyB } = await getNamedSigners());
+
     })
 
     it("Should create post", async () => {
-        let tx = await hub.connect(user).postRBOwner(address3.address, address4.address)
+        await fundAllWithDai()
+        let tx = await hub.connect(user).postRBOwner(partyA.address, partyB.address)
         let receipt = await tx.wait()
+        // test for partyA
+        let event = ethers.utils.defaultAbiCoder.decode(["address"], receipt.events[0].topics[1])
+        expect(event[0]).to.equal(partyA.address)
+        //test for partyB
+        event = ethers.utils.defaultAbiCoder.decode(["address"], receipt.events[0].topics[2])
+        expect(event[0]).to.equal(partyB.address)
 
-        let event1 = ethers.utils.defaultAbiCoder.decode(["address"], receipt.events[0].topics[1])
-
-        console.log(event1);
-        //console.log(receipt.events[0]);
-
-        //console.log(address3.address);
     })
 
 

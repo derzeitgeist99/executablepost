@@ -80,9 +80,11 @@ const getNamedSigners = async () => {
     user = accounts[2]
     address3 = accounts[3]
     address4 = accounts[4]
+    partyA = accounts[5]
+    partyB = accounts[6]
 
 
-    return [governance, user, address3, address4]
+    return { governance, user, address3, address4, partyA, partyB }
 }
 
 

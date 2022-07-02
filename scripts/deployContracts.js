@@ -22,4 +22,14 @@ async function deployContract(name, constructor = [], print = false, signer = fa
 
 }
 
-module.exports = { deployContract }
+async function deployAllContracts() {
+    rbOwner = await deployContract("RBOwner")
+    hub = await deployContract("hub")
+    hub.setIRBOwner(rbOwner.address)
+
+    return { hub, rbOwner }
+
+
+}
+
+module.exports = { deployContract, deployAllContracts }

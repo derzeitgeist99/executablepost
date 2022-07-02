@@ -19,7 +19,8 @@ contract hub {
     IRBOwner iRBOwner;
     //IRBOracle iRBOracle;
     function setIRBOwner(address _address) public {
-    iRBOwner = IRBOwner(_address);
+        iRBOwner = IRBOwner(_address);
+        emit DataTypes.contractAddressChanged(_address);
 
     }
 
@@ -30,13 +31,25 @@ contract hub {
 
     /*Mapping of the storage
     */
-    function postRBOwner(address _partyA, address _partyB) public {
-        bytes32 Id;
-        DataTypes.Post memory post;
-        (post,Id) = iRBOwner.postRBOwner(_partyA,_partyB);
 
-        MapIdToPost[Id] = post;
+    function afterPostRoutines(DataTypes.Post memory _post, bytes32 _id) internal {
+    console.log("afterpost1");
+    
+    emit DataTypes.postCreated(_post.partyA,_post.partyB);
+    emit DataTypes.idCreated(_id);
+    
+}
+
+    function postRBOwner(address _partyA, address _partyB) public {
+        bytes32 id;
+        DataTypes.Post memory post;
+        (post,id) = iRBOwner.postRBOwner(_partyA,_partyB);
+
+        MapIdToPost[id] = post;
         MapAddressToPost[msg.sender] = post;
+
+        afterPostRoutines(post, id);
+
 
     }
 

@@ -7,27 +7,35 @@ chai.use(chaiAsPromised)
 const { ethers } = require("hardhat");
 
 const { getNamedSigners } = require("../scripts/utils");
-const contractAddresses = require("../addresses.json")
-const hubAbi = require("../artifacts/contracts/hub.sol/hub.json")
+
+const { deployAllContracts } = require("../scripts/deployContracts");
 
 
 describe("Testing Governance", async () => {
 
 
-
     before(async () => {
-        const [governance, user, address3] = await getNamedSigners()
-        const hub = new ethers.Contract(contractAddresses["Hub"], hubAbi.abi)
+        ({ hub, rbOwner } = await deployAllContracts());
+        ({ governance, user, address3 } = await getNamedSigners());
+
     })
 
 
     it("should change contract Addresses", async () => {
 
+        originalAddress = rbOwner.address
 
-        await hub.connect(governance).setIRBOwner(address3.address)
+        let tx = await hub.connect(governance).setIRBOwner(address3.address)
+        let receipt = await tx.wait()
+        let event = ethers.utils.defaultAbiCoder.decode(["address"], receipt.events[0].topics[1])
+
+        expect(event[0]).to.equal(address3.address)
 
         //when succesfull change the state back
-        await hub.connect(governance).setIRBOwner(contractAddresses.RBOwner)
+        tx = await hub.connect(governance).setIRBOwner(originalAddress)
+        receipt = await tx.wait()
+        event = ethers.utils.defaultAbiCoder.decode(["address"], receipt.events[0].topics[1])
+        expect(event[0]).to.equal(originalAddress)
 
 
     })

@@ -8,6 +8,7 @@ library DataTypes {
 
     event postCreated (address indexed _party1, address indexed _partyB);
     event idCreated (bytes32  _id);
+    event contractAddressChanged (address indexed _newAddress);
 
 
     enum ResolveTypes {
@@ -19,7 +20,9 @@ library DataTypes {
         address partyA;
         address partyB;
         address owner;
-        uint timestamp;
+        uint resolveAfter;
+        uint256 amount;
+        bool resolved;
 
         ResolveTypes resolvetype;
         ResolveByOracleConditions resolveByOracleConditions;
@@ -34,6 +37,6 @@ library DataTypes {
     }
 
         struct ResolveByOwnerConditions {
-        string price;
+        address resolver;
     }
 }

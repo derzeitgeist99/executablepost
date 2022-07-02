@@ -37,8 +37,18 @@
             },
             {
               "internalType": "uint256",
-              "name": "timestamp",
+              "name": "resolveAfter",
               "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bool",
+              "name": "resolved",
+              "type": "bool"
             },
             {
               "internalType": "enum DataTypes.ResolveTypes",
@@ -60,9 +70,9 @@
             {
               "components": [
                 {
-                  "internalType": "string",
-                  "name": "price",
-                  "type": "string"
+                  "internalType": "address",
+                  "name": "resolver",
+                  "type": "address"
                 }
               ],
               "internalType": "struct DataTypes.ResolveByOwnerConditions",

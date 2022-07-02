@@ -17,15 +17,6 @@ contract commonLogic {
      
     }
 
-    function afterPostRoutines(DataTypes.Post memory _post, bytes32 _id) internal {
-        console.log("afterpost1");
-      
-        emit DataTypes.postCreated(_post.partyA,_post.partyB);
-
-        emit DataTypes.idCreated(_id);
-     
-    }
-
 }
 
 interface IRBOwner {
@@ -33,15 +24,11 @@ interface IRBOwner {
 }
 
 contract RBOwner is commonLogic, IRBOwner{
-    function postRBOwner(address _partyA, address _partyB) public  returns (DataTypes.Post memory _post, bytes32 _id  ) {
+    function postRBOwner(address _partyA, address _partyB) public view returns (DataTypes.Post memory _post, bytes32 _id  ) {
         _post = fillBasicInfo(_partyA, _partyB);
         _id =generateId();
 
-
-        afterPostRoutines(_post, _id);
-
-
-
+        
         return (_post, _id);
 
 
