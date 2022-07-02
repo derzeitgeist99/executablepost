@@ -4,7 +4,9 @@ import 'hardhat/console.sol';
 
 library DataTypes {
 
-    error UserNotAllowed (string);
+    error UserNotAllowed (string );
+    error insufficientBalance(uint balance, uint allowance, uint required);
+    error insufficientAllowance(uint balance, uint allowance, uint required);
 
     event postCreated (address indexed _party1, address indexed _partyB);
     event idCreated (bytes32  _id);

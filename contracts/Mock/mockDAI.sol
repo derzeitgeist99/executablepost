@@ -15,4 +15,8 @@ contract DAI is ERC20 {
     function myBalanceOf(address _address) external view returns (uint) {
         return balanceOf(_address);
     }
+
+    function myAllowance(address _owner, address _spender) public view returns (uint256){
+        return allowance(_owner, _spender);
+    }
 }

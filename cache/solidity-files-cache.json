@@ -869,8 +869,8 @@
       ]
     },
     "/Users/andy/my_repos/executablepost/contracts/Common/DataTypes.sol": {
-      "lastModificationDate": 1656747069615,
-      "contentHash": "2f1f811c7561311bdd18beca31db6a6f",
+      "lastModificationDate": 1656768845521,
+      "contentHash": "1ab8fbf9e21865b9b363572048f564b2",
       "sourceName": "contracts/Common/DataTypes.sol",
       "solcConfig": {
         "version": "0.8.10",
@@ -906,8 +906,8 @@
       ]
     },
     "/Users/andy/my_repos/executablepost/contracts/Modules/RBOwner.sol": {
-      "lastModificationDate": 1656743359183,
-      "contentHash": "7b3affaefc36129e41a02cafd2d400ec",
+      "lastModificationDate": 1656774451859,
+      "contentHash": "d04ed0df4446f018b40df97a86003ed1",
       "sourceName": "contracts/Modules/RBOwner.sol",
       "solcConfig": {
         "version": "0.8.10",
@@ -934,7 +934,8 @@
       },
       "imports": [
         "hardhat/console.sol",
-        "../Common/DataTypes.sol"
+        "../Common/DataTypes.sol",
+        "@openzeppelin/contracts/token/ERC20/IERC20.sol"
       ],
       "versionPragmas": [
         "^0.8.10"
@@ -942,12 +943,13 @@
       "artifacts": [
         "IRBOwner",
         "RBOwner",
-        "commonLogic"
+        "commonLogic",
+        "governanceUtil"
       ]
     },
     "/Users/andy/my_repos/executablepost/contracts/hub.sol": {
-      "lastModificationDate": 1656745478727,
-      "contentHash": "773dd72454c3776ec841a602a2d01206",
+      "lastModificationDate": 1656768840615,
+      "contentHash": "faa2f883428a4dad5190278a51e30249",
       "sourceName": "contracts/hub.sol",
       "solcConfig": {
         "version": "0.8.10",
@@ -985,8 +987,8 @@
       ]
     },
     "/Users/andy/my_repos/executablepost/contracts/Mock/mockDAI.sol": {
-      "lastModificationDate": 1656748283831,
-      "contentHash": "646ccdc326b39e0d4072b956549dddd0",
+      "lastModificationDate": 1656772588279,
+      "contentHash": "07135a42442604702da242281be1edf0",
       "sourceName": "contracts/Mock/mockDAI.sol",
       "solcConfig": {
         "version": "0.8.10",
