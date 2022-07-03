@@ -10,11 +10,7 @@ contract governanceUtil {
     address treasury;
 
     modifier onlyGov () {
-        console.log(msg.sender);
-        console.log(governance);
-        console.log(msg.sender != governance);
        if (msg.sender != governance) {
-        console.log("reverting");
         revert DataTypes.UserNotAllowed("Not a Governance Address"); }
         _;
     }
