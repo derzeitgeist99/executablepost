@@ -34,3 +34,4 @@ const fundAllWithDai = async () => {
 
 //deployDai()
 //fundAllWithDai()
+//npx hardhat run Scripts/fundAllwithDAI.js --network localhost

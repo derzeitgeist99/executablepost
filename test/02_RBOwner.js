@@ -34,10 +34,9 @@ describe("Testing postRBOwner", async () => {
 
     it("Should create post", async () => {
         tx = await dai.connect(user).approve(hub.address, amount)
-        receipt = await tx.wait()
 
         allowance = await dai.connect(user).allowance(user.address, hub.address)
-        console.log(parseInt(allowance, 10));
+
 
         tx = await hub.connect(user).postRBOwner(partyA.address, partyB.address, 1000, currency, { gasLimit: 300000 })
         receipt = await tx.wait()
@@ -47,6 +46,7 @@ describe("Testing postRBOwner", async () => {
         //test for partyB
         event = ethers.utils.defaultAbiCoder.decode(["address"], receipt.events[0].topics[2])
         expect(event[0]).to.equal(partyB.address)
+        //
 
     })
 

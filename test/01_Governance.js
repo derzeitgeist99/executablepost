@@ -61,6 +61,7 @@ describe("Testing Governance", async () => {
     it.skip("should revert Treasury address change", async () => {
         await expect(rbOwner.connect(user)._setTreasuryAddress(address3.address, { gasLimit: 300000 })).to.be.rejected
     })
+    it("Should revert unwhitelisted currency")
 
 
 })

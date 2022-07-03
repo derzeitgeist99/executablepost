@@ -26,19 +26,13 @@ async function deployContract(name, constructor = [], print = false, signer = fa
 }
 
 async function deployAllContracts() {
-    let tx
 
-    const { governance } = await getNamedSigners()
     hub = await deployContract("hub")
     rbOwner = await deployContract("RBOwner", [hub.address])
 
     hub.setIRBOwner(rbOwner.address)
 
-    let gov = await rbOwner.governance()
-    console.log("gov", gov);
-
     return { hub, rbOwner }
-
 
 }
 
