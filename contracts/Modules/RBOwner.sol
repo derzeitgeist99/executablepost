@@ -4,24 +4,30 @@ import 'hardhat/console.sol';
 import "../Common/DataTypes.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-contract commonLogic {
+contract governanceUtil {
 
-    // Import DAI
-    IERC20 dai;
+    address public governance;
+    address treasury;
 
-    function _setDaiAddress (address _DAIAddress) internal {
-        dai = IERC20(_DAIAddress);
-        emit DataTypes.contractAddressChanged(_DAIAddress);
+    modifier onlyGov () {
+        console.log(msg.sender);
+        console.log(governance);
+        console.log(msg.sender != governance);
+       if (msg.sender != governance) {
+        console.log("reverting");
+        revert DataTypes.UserNotAllowed("Not a Governance Address"); }
+        _;
     }
+
 
     //Treasury
-
-    address treasury;
-    function _setTreasuryAddress(address _treasury) internal {
+    function _setTreasuryAddress(address _treasury) public onlyGov{
         treasury = _treasury;
-        emit DataTypes.contractAddressChanged(treasury);
-    
+        emit DataTypes.contractAddressChanged(treasury);   
     }
+}
+
+ contract commonLogic is governanceUtil{
 
     function fillBasicInfo(address _partyA, address _partyB) internal pure returns (DataTypes.Post memory _post) {
         _post.partyA = _partyA;
@@ -35,7 +41,9 @@ contract commonLogic {
      
     }
 
-    modifier checkDAIBalance(uint256 _amount ) {
+    modifier checkDAIBalance(uint256 _amount, address _currency ) {
+        IERC20 dai = IERC20(_currency);
+
         uint DAIbalance = dai.balanceOf(msg.sender);
         uint DAIallowance = dai.allowance(msg.sender, address(this));
 
@@ -54,14 +62,20 @@ contract commonLogic {
 }
 
 interface IRBOwner {
-    function postRBOwner(address _partyA, address _partyB, uint256 _amount) external returns (DataTypes.Post calldata, bytes32 _Id );
+    function postRBOwner(address _partyA, address _partyB, uint256 _amount, address _currency) external returns (DataTypes.Post calldata, bytes32 _Id );
 }
 
-contract RBOwner is commonLogic, IRBOwner{
+ contract RBOwner is commonLogic, IRBOwner{
 
-    function postRBOwner(address _partyA, address _partyB, uint256 _amount)
+    constructor (address _treasury) {
+        governance = msg.sender;
+        treasury = _treasury;
+
+    }
+
+    function postRBOwner(address _partyA, address _partyB, uint256 _amount,address _currency)
     public view 
-    checkDAIBalance(_amount)
+    checkDAIBalance(_amount, _currency)
     returns (DataTypes.Post memory _post, bytes32 _id  ) {
       
         _post = fillBasicInfo(_partyA, _partyB);
@@ -72,31 +86,6 @@ contract RBOwner is commonLogic, IRBOwner{
 
 
     }
-
-}
-
-contract governanceUtil is commonLogic{
-
-    address governance;
-
-    constructor () {
-        governance = msg.sender;
-    }
-
-    modifier onlyGov () {
-
-       if (msg.sender != governance) {
-        revert DataTypes.UserNotAllowed("Not a Governance Address"); }
-        _;
-    }
-
-    function setDaiAddress (address _address) public  onlyGov {
-        _setDaiAddress(_address);
-    }
-
-    function setTreasuryAddress (address _address) public onlyGov{
-        _setTreasuryAddress(_address);
-    }    
 
 }
 

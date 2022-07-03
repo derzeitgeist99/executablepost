@@ -24,6 +24,7 @@ library DataTypes {
         address owner;
         uint resolveAfter;
         uint256 amount;
+        address _currency;
         bool resolved;
 
         ResolveTypes resolvetype;

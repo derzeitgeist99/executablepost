@@ -9,7 +9,7 @@ const addressBook = require("../externalcontractaddresses.json")
 const deployDai = async () => {
     const filePath = "./externalcontractaddresses.json"
 
-    const dai = await deployContract("DAI");
+    const dai = await deployContract("DAI", [], true);
     // update address book
     addressBook.ERC20 = { "local": { "DAI": dai.address } }
     await fs.writeFile(filePath, JSON.stringify(addressBook))
@@ -30,7 +30,7 @@ const fundAllWithDai = async () => {
 }
 
 
-module.exports = { fundAllWithDai, deployDai }
+//module.exports = { fundAllWithDai, deployDai }
 
-// deployDai()
+//deployDai()
 //fundAllWithDai()

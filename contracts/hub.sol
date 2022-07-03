@@ -40,10 +40,10 @@ contract hub {
     
 }
 
-    function postRBOwner(address _partyA, address _partyB, uint256 _amount) public {
+    function postRBOwner(address _partyA, address _partyB, uint256 _amount, address currency) public {
         bytes32 id;
         DataTypes.Post memory post;
-        (post,id) = iRBOwner.postRBOwner(_partyA,_partyB, _amount);
+        (post,id) = iRBOwner.postRBOwner(_partyA,_partyB, _amount, currency);
 
         MapIdToPost[id] = post;
         MapAddressToPost[msg.sender] = post;

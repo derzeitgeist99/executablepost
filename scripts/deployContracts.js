@@ -26,17 +26,18 @@ async function deployContract(name, constructor = [], print = false, signer = fa
 }
 
 async function deployAllContracts() {
+    let tx
 
     const { governance } = await getNamedSigners()
-    rbOwner = await deployContract("RBOwner")
     hub = await deployContract("hub")
-    gov = await deployContract("governanceUtil", [], false, governance)
-    hub.setIRBOwner(rbOwner.address)
-    console.log(addressBook.ERC20.local.DAI)
-    gov.connect(governance).setDaiAddress(addressBook.ERC20.local.DAI)
-    gov.connect(governance).setTreasuryAddress(hub.address)
+    rbOwner = await deployContract("RBOwner", [hub.address])
 
-    return { hub, rbOwner, gov }
+    hub.setIRBOwner(rbOwner.address)
+
+    let gov = await rbOwner.governance()
+    console.log("gov", gov);
+
+    return { hub, rbOwner }
 
 
 }

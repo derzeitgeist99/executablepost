@@ -14,6 +14,7 @@ const DaiAbi = require("../artifacts/contracts/Mock/mockDAI.sol/DAI.json");
 
 
 const amount = 1000
+const currency = addressBook.ERC20.local.DAI
 let dai
 
 let tx
@@ -38,7 +39,7 @@ describe("Testing postRBOwner", async () => {
         allowance = await dai.connect(user).allowance(user.address, hub.address)
         console.log(parseInt(allowance, 10));
 
-        tx = await hub.connect(user).postRBOwner(partyA.address, partyB.address, 1000, { gasLimit: 300000 })
+        tx = await hub.connect(user).postRBOwner(partyA.address, partyB.address, 1000, currency, { gasLimit: 300000 })
         receipt = await tx.wait()
         // test for partyA
         event = ethers.utils.defaultAbiCoder.decode(["address"], receipt.events[0].topics[1])
