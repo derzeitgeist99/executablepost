@@ -40,12 +40,10 @@ contract governanceUtil {
     modifier checkDAIBalance(uint256 _amount, address _currency ) {
         IERC20 dai = IERC20(_currency);
 
-
         uint DAIbalance = dai.balanceOf(tx.origin);
         uint DAIallowance = dai.allowance(tx.origin, treasury);
 
-        console.log(DAIallowance);
-        console.log(DAIbalance);
+
        if (DAIallowance < _amount) {
         revert DataTypes.insufficientAllowance({balance: DAIbalance,allowance: DAIallowance, required: _amount});
             }
@@ -74,9 +72,7 @@ interface IRBOwner {
     public view 
     checkDAIBalance(_amount, _currency)
     returns (DataTypes.Post memory _post, bytes32 _id  ) {
-        console.log("Calling from RB");
-        console.log(msg.sender);
-        console.log(tx.origin);
+
       
         _post = fillBasicInfo(_partyA, _partyB);
         _id =generateId();
