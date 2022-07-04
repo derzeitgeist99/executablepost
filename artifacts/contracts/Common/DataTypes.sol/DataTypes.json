@@ -18,11 +18,6 @@
       "inputs": [
         {
           "internalType": "uint256",
-          "name": "balance",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
           "name": "allowance",
           "type": "uint256"
         },
@@ -40,11 +35,6 @@
         {
           "internalType": "uint256",
           "name": "balance",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "allowance",
           "type": "uint256"
         },
         {
@@ -73,7 +63,7 @@
       "anonymous": false,
       "inputs": [
         {
-          "indexed": false,
+          "indexed": true,
           "internalType": "bytes32",
           "name": "_id",
           "type": "bytes32"
@@ -81,29 +71,10 @@
       ],
       "name": "idCreated",
       "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": true,
-          "internalType": "address",
-          "name": "_party1",
-          "type": "address"
-        },
-        {
-          "indexed": true,
-          "internalType": "address",
-          "name": "_partyB",
-          "type": "address"
-        }
-      ],
-      "name": "postCreated",
-      "type": "event"
     }
   ],
-  "bytecode": "0x60566050600b82828239805160001a6073146043577f4e487b7100000000000000000000000000000000000000000000000000000000600052600060045260246000fd5b30600052607381538281f3fe73000000000000000000000000000000000000000030146080604052600080fdfea26469706673582212205c07ad73c5e529708e6b115af0bd96e80128800c1de8514f95addf62a5f8ad7964736f6c634300080a0033",
-  "deployedBytecode": "0x73000000000000000000000000000000000000000030146080604052600080fdfea26469706673582212205c07ad73c5e529708e6b115af0bd96e80128800c1de8514f95addf62a5f8ad7964736f6c634300080a0033",
+  "bytecode": "0x60566050600b82828239805160001a6073146043577f4e487b7100000000000000000000000000000000000000000000000000000000600052600060045260246000fd5b30600052607381538281f3fe73000000000000000000000000000000000000000030146080604052600080fdfea2646970667358221220584d07f2b5c60d8da0ba744d755e193faadb9c7ca8781bc4b54c9b7ae54c639264736f6c634300080a0033",
+  "deployedBytecode": "0x73000000000000000000000000000000000000000030146080604052600080fdfea2646970667358221220584d07f2b5c60d8da0ba744d755e193faadb9c7ca8781bc4b54c9b7ae54c639264736f6c634300080a0033",
   "linkReferences": {},
   "deployedLinkReferences": {}
 }

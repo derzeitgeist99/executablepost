@@ -5,11 +5,11 @@ import 'hardhat/console.sol';
 library DataTypes {
 
     error UserNotAllowed (string );
-    error insufficientBalance(uint balance, uint allowance, uint required);
-    error insufficientAllowance(uint balance, uint allowance, uint required);
+    error insufficientBalance(uint balance, uint required);
+    error insufficientAllowance(uint allowance, uint required);
 
-    event postCreated (address indexed _party1, address indexed _partyB);
-    event idCreated (bytes32  _id);
+   
+    event idCreated (bytes32  indexed _id);
     event contractAddressChanged (address indexed _newAddress);
 
 
@@ -22,7 +22,8 @@ library DataTypes {
         address partyA;
         address partyB;
         address owner;
-        uint resolveAfter;
+        uint256 resolveAfter;
+        uint256 automaticallyResolveAfter;
         uint256 amount;
         address _currency;
         bool resolved;

@@ -16,6 +16,11 @@
           "type": "address"
         },
         {
+          "internalType": "address",
+          "name": "_owner",
+          "type": "address"
+        },
+        {
           "internalType": "uint256",
           "name": "_amount",
           "type": "uint256"
@@ -24,6 +29,11 @@
           "internalType": "address",
           "name": "_currency",
           "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_waitSeconds",
+          "type": "uint256"
         }
       ],
       "name": "postRBOwner",
@@ -48,6 +58,11 @@
             {
               "internalType": "uint256",
               "name": "resolveAfter",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "automaticallyResolveAfter",
               "type": "uint256"
             },
             {

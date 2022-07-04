@@ -39,10 +39,13 @@ const expectRedeemContractToBeRejected = async (sender, createPost, partyAResult
 const getDAIBalances = async (contract, addresses, BN = false) => {
 
     let balances = []
+
     for (let address of addresses) {
+
         let balance = await contract.balanceOf(address)
 
         balances.push(BN ? balance : balance.toNumber())
+
 
     }
     return balances

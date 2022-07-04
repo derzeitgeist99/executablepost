@@ -25,33 +25,36 @@ contract hub {
     }
 
 
+    //Mapping of the storage
     //Is this a luxury?
     mapping(bytes32 => DataTypes.Post) internal MapIdToPost;
     mapping(address => DataTypes.Post) internal MapAddressToPost;
 
-    /*Mapping of the storage
-    */
+    function getPostById(bytes32 _id) public view returns (DataTypes.Post memory) {
+        return MapIdToPost[_id];
+    }
 
-    function afterPostRoutines(DataTypes.Post memory _post, bytes32 _id) internal {
-    console.log("afterpost1");
     
-    emit DataTypes.postCreated(_post.partyA,_post.partyB);
-    emit DataTypes.idCreated(_id);
-    
-}
 
-    function postRBOwner(address _partyA, address _partyB, uint256 _amount, address currency) public {
+
+    function postRBOwner(address _partyA, address _partyB,  uint256 _amount, address currency, uint256 _waitSeconds) public 
+    {
         bytes32 id;
         DataTypes.Post memory post;
-        (post,id) = iRBOwner.postRBOwner(_partyA,_partyB, _amount, currency);
+        (post,id) = iRBOwner.postRBOwner(_partyA,_partyB, msg.sender, _amount, currency,_waitSeconds);
+        console.log(post.partyA);
 
         MapIdToPost[id] = post;
         MapAddressToPost[msg.sender] = post;
 
-        afterPostRoutines(post, id);
+
+
+    emit DataTypes.idCreated(id);
 
 
     }
+
+
 
     /* 
     resolveRBOwner()
