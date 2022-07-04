@@ -3,6 +3,7 @@ pragma solidity ^0.8.10;
 import 'hardhat/console.sol';
 import "../Common/DataTypes.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@aave/lens-protocol/contracts/interfaces/ILensHub.sol";
 
 contract governanceUtil {
 
@@ -72,6 +73,13 @@ contract governanceUtil {
          erc.transferFrom(_owner, treasury, _amount);
     }
 
+}
+
+contract lensInteraction {
+    ILensHub lens = ILensHub("0x67d269191c92Caf3cD7723F116c85e6E9bf55933");
+    function getProfile(uint256 profileId) internal view {
+        
+    }
 }
 
 interface IRBOwner {
