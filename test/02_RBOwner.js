@@ -11,6 +11,7 @@ const { deployAllContracts } = require("../scripts/deployContracts");
 const { fundAllWithDai } = require("../scripts/fundAllwithDAI");
 const addressBook = require("../externalcontractaddresses.json")
 const DaiAbi = require("../artifacts/contracts/Mock/mockDAI.sol/DAI.json");
+const { lensSetDispatcher } = require("../scripts/lensSetDispatcher");
 
 
 const amount = 10
@@ -30,6 +31,8 @@ describe("Testing postRBOwner", async () => {
         ({ hub, rbOwner } = await deployAllContracts());
         ({ governance, user, partyA, partyB } = await getNamedSigners());
         dai = new ethers.Contract(addressBook.ERC20.local.DAI, DaiAbi.abi, governance)
+        //setUp disptacher (ie contract that can post on behalf of profile)
+        await lensSetDispatcher(rbOwner.address)
 
     })
 
@@ -68,6 +71,11 @@ describe("Testing postRBOwner", async () => {
         expect(initialBalances[1] + amount, "contract DAI balance").to.equal(endingBalances[1])
 
     })
+    it("Should test lensSetup", async () => {
+
+    })
+
+
     it("Should test resolveAfter and automaticallyResolveAfter using timeblock and waitForAutomaticResolution")
 
     it("Should revert due to low allowance")
