@@ -1,6 +1,8 @@
 const hre = require("hardhat");
 const { getNamedSigners } = require("./utils");
 const addressBook = require("../externalcontractaddresses.json")
+const lensHubAddr = require("../../Tutorials/lens-protocol/addresses.json")["lensHub proxy"]
+
 
 async function deployContract(name, constructor = [], print = false, signer = false) {
 
@@ -28,7 +30,7 @@ async function deployContract(name, constructor = [], print = false, signer = fa
 async function deployAllContracts() {
 
     hub = await deployContract("hub")
-    rbOwner = await deployContract("RBOwner", [hub.address])
+    rbOwner = await deployContract("RBOwner", [hub.address, lensHubAddr])
 
     hub.setIRBOwner(rbOwner.address)
 

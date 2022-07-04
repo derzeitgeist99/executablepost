@@ -2,28 +2,11 @@
 pragma solidity ^0.8.10;
 import 'hardhat/console.sol';
 import "../Common/DataTypes.sol";
+import "../Common/Governance.sol";
+import "../Common/LensInteraction.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "@aave/lens-protocol/contracts/interfaces/ILensHub.sol";
-
-contract governanceUtil {
-
-    address public governance;
-    address treasury;
-    uint256 public waitForAutomaticResolution;
-
-    modifier onlyGov () {
-       if (msg.sender != governance) {
-        revert DataTypes.UserNotAllowed("Not a Governance Address"); }
-        _;
-    }
 
 
-    //Treasury
-    function _setTreasuryAddress(address _treasury) public onlyGov{
-        treasury = _treasury;
-        emit DataTypes.contractAddressChanged(treasury);
-    }
-}
 
  contract commonLogic is governanceUtil{
     modifier checkERCBalance(uint256 _amount, address _currency, address _owner ) {
@@ -64,7 +47,6 @@ contract governanceUtil {
     }
 
     function transferERC(uint256 _amount, address _currency, address _owner) internal {
-         //or is he already in scope
          IERC20 erc = IERC20(_currency);
          uint allowance = erc.allowance(_owner, treasury);
          console.log(allowance);
@@ -75,12 +57,7 @@ contract governanceUtil {
 
 }
 
-contract lensInteraction {
-    ILensHub lens = ILensHub("0x67d269191c92Caf3cD7723F116c85e6E9bf55933");
-    function getProfile(uint256 profileId) internal view {
-        
-    }
-}
+
 
 interface IRBOwner {
     function postRBOwner(
@@ -95,12 +72,13 @@ interface IRBOwner {
     returns (DataTypes.Post calldata, bytes32 _Id );
 }
 
- contract RBOwner is commonLogic, IRBOwner{
+ contract RBOwner is commonLogic, lensInteraction, IRBOwner{
 
-    constructor (address _treasury) {
+    constructor (address _treasury, address _lens) {
         governance = msg.sender;
         treasury = _treasury;
         waitForAutomaticResolution = 60*60*24*7*52; //1 year
+        lens = ILensHub(_lens);
 
     }
 
@@ -119,6 +97,7 @@ interface IRBOwner {
         // still is this OK, knowing that we will be still changing state in the hub?
         transferERC(_amount, _currency, _owner);
 
+        lensGetProfile(0);
         
         return (_post, _id);
 
