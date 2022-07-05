@@ -62,6 +62,9 @@ describe("Testing Governance", async () => {
         await expect(rbOwner.connect(user)._setTreasuryAddress(address3.address, { gasLimit: 300000 })).to.be.rejected
     })
     it("Should revert unwhitelisted currency")
+    it("should change the Automatic resolution period")
+    it("should test update of lens address")
+    it("should revert update of lens address due to unauthorized user")
 
 
 })

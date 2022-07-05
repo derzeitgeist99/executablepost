@@ -6,39 +6,6 @@
     {
       "inputs": [
         {
-          "internalType": "address",
-          "name": "_partyA",
-          "type": "address"
-        },
-        {
-          "internalType": "address",
-          "name": "_partyB",
-          "type": "address"
-        },
-        {
-          "internalType": "address",
-          "name": "_owner",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "_amount",
-          "type": "uint256"
-        },
-        {
-          "internalType": "address",
-          "name": "_currency",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "_waitSeconds",
-          "type": "uint256"
-        }
-      ],
-      "name": "postRBOwner",
-      "outputs": [
-        {
           "components": [
             {
               "internalType": "address",
@@ -72,7 +39,7 @@
             },
             {
               "internalType": "address",
-              "name": "_currency",
+              "name": "currency",
               "type": "address"
             },
             {
@@ -108,6 +75,28 @@
               "internalType": "struct DataTypes.ResolveByOwnerConditions",
               "name": "resolveByOwnerConditions",
               "type": "tuple"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint256",
+                  "name": "profileId",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "initialPubId",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "resolvingPubId",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct DataTypes.LensPostInfo",
+              "name": "lensPostInfo",
+              "type": "tuple"
             }
           ],
           "internalType": "struct DataTypes.Post",
@@ -115,9 +104,54 @@
           "type": "tuple"
         },
         {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "profileId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "string",
+              "name": "contentURI",
+              "type": "string"
+            },
+            {
+              "internalType": "address",
+              "name": "collectModule",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "collectModuleInitData",
+              "type": "bytes"
+            },
+            {
+              "internalType": "address",
+              "name": "referenceModule",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "referenceModuleInitData",
+              "type": "bytes"
+            }
+          ],
+          "internalType": "struct DataTypes.PostData",
+          "name": "",
+          "type": "tuple"
+        }
+      ],
+      "name": "postRBOwner",
+      "outputs": [
+        {
           "internalType": "bytes32",
-          "name": "_Id",
+          "name": "id",
           "type": "bytes32"
+        },
+        {
+          "internalType": "uint256",
+          "name": "initialPubId",
+          "type": "uint256"
         }
       ],
       "stateMutability": "nonpayable",

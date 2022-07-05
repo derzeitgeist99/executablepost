@@ -869,8 +869,8 @@
       ]
     },
     "/Users/andy/my_repos/executablepost/contracts/Common/DataTypes.sol": {
-      "lastModificationDate": 1656937645703,
-      "contentHash": "8c6261e115886b05e2b4aae649316e90",
+      "lastModificationDate": 1657030110790,
+      "contentHash": "6027b6d687853aef6dc0b802118223b6",
       "sourceName": "contracts/Common/DataTypes.sol",
       "solcConfig": {
         "version": "0.8.10",
@@ -906,8 +906,8 @@
       ]
     },
     "/Users/andy/my_repos/executablepost/contracts/Modules/RBOwner.sol": {
-      "lastModificationDate": 1656942829507,
-      "contentHash": "ea11dee1dd7a6ed8b92687ff13308b43",
+      "lastModificationDate": 1657031793147,
+      "contentHash": "72d07c7800823d39a0e29c47feb05e8c",
       "sourceName": "contracts/Modules/RBOwner.sol",
       "solcConfig": {
         "version": "0.8.10",
@@ -937,7 +937,7 @@
         "../Common/DataTypes.sol",
         "../Common/Governance.sol",
         "../Common/LensInteraction.sol",
-        "@openzeppelin/contracts/token/ERC20/IERC20.sol"
+        "../Common/ERC20Interaction.sol"
       ],
       "versionPragmas": [
         "^0.8.10"
@@ -945,12 +945,12 @@
       "artifacts": [
         "IRBOwner",
         "RBOwner",
-        "commonLogic"
+        "utils"
       ]
     },
     "/Users/andy/my_repos/executablepost/contracts/hub.sol": {
-      "lastModificationDate": 1656908904315,
-      "contentHash": "3290d1c130f1827e05f210080ebf169e",
+      "lastModificationDate": 1657027023658,
+      "contentHash": "c83616a5d1c0402509872e112e9d4d07",
       "sourceName": "contracts/hub.sol",
       "solcConfig": {
         "version": "0.8.10",
@@ -978,7 +978,8 @@
       "imports": [
         "hardhat/console.sol",
         "./Common/DataTypes.sol",
-        "./Modules/RBOwner.sol"
+        "./Modules/RBOwner.sol",
+        "@aave/lens-protocol/contracts/interfaces/ILensHub.sol"
       ],
       "versionPragmas": [
         "^0.8.10"
@@ -1135,8 +1136,8 @@
       ]
     },
     "/Users/andy/my_repos/executablepost/contracts/Common/LensInteraction.sol": {
-      "lastModificationDate": 1656942794294,
-      "contentHash": "361d7cc51d005c891bb479762406da91",
+      "lastModificationDate": 1657030979814,
+      "contentHash": "5968369858872ac5cbeaa4bfd5f27df9",
       "sourceName": "contracts/Common/LensInteraction.sol",
       "solcConfig": {
         "version": "0.8.10",
@@ -1163,13 +1164,89 @@
       },
       "imports": [
         "hardhat/console.sol",
-        "@aave/lens-protocol/contracts/interfaces/ILensHub.sol"
+        "@aave/lens-protocol/contracts/interfaces/ILensHub.sol",
+        "@aave/lens-protocol/contracts/libraries/Errors.sol"
       ],
       "versionPragmas": [
         "^0.8.10"
       ],
       "artifacts": [
         "lensInteraction"
+      ]
+    },
+    "/Users/andy/my_repos/executablepost/node_modules/@aave/lens-protocol/contracts/libraries/Errors.sol": {
+      "lastModificationDate": 1656918458166,
+      "contentHash": "8b8e8cf73b8a90af6af14d207d5b91ed",
+      "sourceName": "@aave/lens-protocol/contracts/libraries/Errors.sol",
+      "solcConfig": {
+        "version": "0.8.10",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.10"
+      ],
+      "artifacts": [
+        "Errors"
+      ]
+    },
+    "/Users/andy/my_repos/executablepost/contracts/Common/ERC20Interaction.sol": {
+      "lastModificationDate": 1657031648578,
+      "contentHash": "c46c35cbd14793faf613149c9a29c795",
+      "sourceName": "contracts/Common/ERC20Interaction.sol",
+      "solcConfig": {
+        "version": "0.8.10",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "hardhat/console.sol",
+        "@openzeppelin/contracts/token/ERC20/IERC20.sol",
+        "../Common/DataTypes.sol",
+        "../Common/Governance.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.10"
+      ],
+      "artifacts": [
+        "ERC20Interaction"
       ]
     }
   }

@@ -3,17 +3,26 @@ pragma solidity ^0.8.10;
 import 'hardhat/console.sol';
 
 import {ILensHub, DataTypes as LensDataTypes} from "@aave/lens-protocol/contracts/interfaces/ILensHub.sol";
+import {Errors as LensErrors} from "@aave/lens-protocol/contracts/libraries/Errors.sol";
 
 contract lensInteraction {
     ILensHub lens;
 
-    function lensGetProfile(uint256 _profileId) internal view returns(LensDataTypes.ProfileStruct memory){
-    lens.getProfile(0);
-        
-        LensDataTypes.ProfileStruct memory profile = lens.getProfile(3);
-        console.log(_profileId);
-        console.log("handle");
-        console.log(profile.handle);
+    //modifiers
+    modifier checkLensBeforePost (uint256 _profileId) {
+        //Check if handle exists
+        bytes memory handle = bytes(lens.getHandle(_profileId));
+        if (handle.length == 0) {revert LensErrors.TokenDoesNotExist();}
+
+        //Check if contract is whitelisted as dispatcher
+        address dispatcher = lens.getDispatcher(_profileId);
+        if (dispatcher != address(this)) {revert LensErrors.NotDispatcher();}
+        _;
+
+    }
+
+    function postToLens(LensDataTypes.PostData calldata _lensPost) internal returns(uint256) {
+        return lens.post(_lensPost);
     }
 
 

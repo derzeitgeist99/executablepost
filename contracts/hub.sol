@@ -3,6 +3,7 @@ pragma solidity ^0.8.10;
 import 'hardhat/console.sol';
 import "./Common/DataTypes.sol";
 import "./Modules/RBOwner.sol";
+import {DataTypes as LensDataTypes} from "@aave/lens-protocol/contracts/interfaces/ILensHub.sol";
 
 /* Import
 DataTypes
@@ -35,19 +36,21 @@ contract hub {
     }
 
     
-
-
-    function postRBOwner(address _partyA, address _partyB,  uint256 _amount, address currency, uint256 _waitSeconds) public 
+    function postRBOwner(DataTypes.Post memory _post, LensDataTypes.PostData calldata _lensPost ) public 
     {
         bytes32 id;
-        DataTypes.Post memory post;
-        (post,id) = iRBOwner.postRBOwner(_partyA,_partyB, msg.sender, _amount, currency,_waitSeconds);
-        console.log(post.partyA);
+        uint256 initialPubId;
+      
+        (id,initialPubId) = iRBOwner.postRBOwner(_post,_lensPost);
+        console.log("initial pub Id");
+        console.log(initialPubId);
 
-        MapIdToPost[id] = post;
-        MapAddressToPost[msg.sender] = post;
+        _post.lensPostInfo.profileId = _lensPost.profileId;
+        _post.lensPostInfo.initialPubId = initialPubId;
 
-
+        MapIdToPost[id] = _post;
+        MapAddressToPost[msg.sender] = _post;
+        console.logBytes32(id);
 
     emit DataTypes.idCreated(id);
 
