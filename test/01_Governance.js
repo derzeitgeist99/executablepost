@@ -12,41 +12,23 @@ const addressBook = require("../externalcontractaddresses.json")
 
 describe("Testing Governance", async () => {
 
-
+    let hub
     before(async () => {
-        ({ hub, rbOwner, gov } = await deployAllContracts());
+        ({ hub } = await deployAllContracts());
         ({ governance, user, address3 } = await getNamedSigners());
 
     })
 
 
-    it("should change contract Addresses", async () => {
-
-        originalAddress = rbOwner.address
-
-        let tx = await hub.connect(governance).setIRBOwner(address3.address)
-        let receipt = await tx.wait()
-        let event = ethers.utils.defaultAbiCoder.decode(["address"], receipt.events[0].topics[1])
-
-        expect(event[0]).to.equal(address3.address)
-
-        //when succesfull change the state back
-        tx = await hub.connect(governance).setIRBOwner(originalAddress)
-        receipt = await tx.wait()
-        event = ethers.utils.defaultAbiCoder.decode(["address"], receipt.events[0].topics[1])
-        expect(event[0]).to.equal(originalAddress)
-
-    })
-
     it("Should change the Treasury Address", async () => {
 
-        let tx = await rbOwner.connect(governance)._setTreasuryAddress(address3.address)
+        let tx = await hub.connect(governance)._setTreasuryAddress(address3.address)
         let receipt = await tx.wait()
         let event = ethers.utils.defaultAbiCoder.decode(["address"], receipt.events[0].topics[1])
         expect(event[0]).to.equal(address3.address)
 
         //when succesfull change the state back
-        tx = await rbOwner.connect(governance)._setTreasuryAddress(hub.address)
+        tx = await hub.connect(governance)._setTreasuryAddress(hub.address)
         receipt = await tx.wait()
         event = ethers.utils.defaultAbiCoder.decode(["address"], receipt.events[0].topics[1])
         expect(event[0]).to.equal(hub.address)
@@ -54,12 +36,12 @@ describe("Testing Governance", async () => {
     })
 
 
-    it("should revert contract Addresses ", async () => {
-        await expect(hub.connect(user).setIRBOwner(address3.address)).to.be.rejectedWith("UserNotAllowed")
-    })
+    // it("should revert contract Addresses ", async () => {
+    //     await expect(hub.connect(user).setIRBOwner(address3.address)).to.be.rejectedWith("UserNotAllowed")
+    // })
     //cannot get the error message. so keeping this test as pending
     it.skip("should revert Treasury address change", async () => {
-        await expect(rbOwner.connect(user)._setTreasuryAddress(address3.address, { gasLimit: 300000 })).to.be.rejected
+        await expect(hub.connect(user)._setTreasuryAddress(address3.address, { gasLimit: 300000 })).to.be.rejected
     })
     it("Should revert unwhitelisted currency")
     it("should change the Automatic resolution period")

@@ -12,6 +12,7 @@ async function deployContract(name, constructor = [], print = false, signer = fa
         signer = signer ? signer : governance
 
         const Contract = await hre.ethers.getContractFactory(name, "", signer)
+
         const contract = await Contract.connect(signer).deploy(...constructor, { gasLimit: 3000000 })
 
 
@@ -29,12 +30,10 @@ async function deployContract(name, constructor = [], print = false, signer = fa
 
 async function deployAllContracts() {
 
-    hub = await deployContract("hub")
-    rbOwner = await deployContract("RBOwner", [hub.address, lensHubAddr])
 
-    hub.setIRBOwner(rbOwner.address)
+    hub = await deployContract("hub", [lensHubAddr])
 
-    return { hub, rbOwner }
+    return { hub }
 
 }
 

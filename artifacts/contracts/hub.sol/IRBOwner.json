@@ -1,0 +1,165 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "IRBOwner",
+  "sourceName": "contracts/hub.sol",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "partyA",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "partyB",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "resolveAfter",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "automaticallyResolveAfter",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "currency",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "resolved",
+              "type": "bool"
+            },
+            {
+              "internalType": "enum DataTypes.ResolveTypes",
+              "name": "resolvetype",
+              "type": "uint8"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint256",
+                  "name": "price",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct DataTypes.ResolveByOracleConditions",
+              "name": "resolveByOracleConditions",
+              "type": "tuple"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "resolver",
+                  "type": "address"
+                }
+              ],
+              "internalType": "struct DataTypes.ResolveByOwnerConditions",
+              "name": "resolveByOwnerConditions",
+              "type": "tuple"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint256",
+                  "name": "profileId",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "initialPubId",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "resolvingPubId",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct DataTypes.LensPostInfo",
+              "name": "lensPostInfo",
+              "type": "tuple"
+            }
+          ],
+          "internalType": "struct DataTypes.Post",
+          "name": "",
+          "type": "tuple"
+        },
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "profileId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "string",
+              "name": "contentURI",
+              "type": "string"
+            },
+            {
+              "internalType": "address",
+              "name": "collectModule",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "collectModuleInitData",
+              "type": "bytes"
+            },
+            {
+              "internalType": "address",
+              "name": "referenceModule",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "referenceModuleInitData",
+              "type": "bytes"
+            }
+          ],
+          "internalType": "struct DataTypes.PostData",
+          "name": "",
+          "type": "tuple"
+        }
+      ],
+      "name": "postRBOwner",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "id",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "uint256",
+          "name": "initialPubId",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

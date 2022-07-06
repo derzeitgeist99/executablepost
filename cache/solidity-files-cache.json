@@ -905,52 +905,9 @@
         "DataTypes"
       ]
     },
-    "/Users/andy/my_repos/executablepost/contracts/Modules/RBOwner.sol": {
-      "lastModificationDate": 1657031793147,
-      "contentHash": "72d07c7800823d39a0e29c47feb05e8c",
-      "sourceName": "contracts/Modules/RBOwner.sol",
-      "solcConfig": {
-        "version": "0.8.10",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "hardhat/console.sol",
-        "../Common/DataTypes.sol",
-        "../Common/Governance.sol",
-        "../Common/LensInteraction.sol",
-        "../Common/ERC20Interaction.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.10"
-      ],
-      "artifacts": [
-        "IRBOwner",
-        "RBOwner",
-        "utils"
-      ]
-    },
     "/Users/andy/my_repos/executablepost/contracts/hub.sol": {
-      "lastModificationDate": 1657033459630,
-      "contentHash": "c9c6b416553f2442eabdce041f317484",
+      "lastModificationDate": 1657091532184,
+      "contentHash": "a946e2160dcdbf714d9bc12c2a4be3ca",
       "sourceName": "contracts/hub.sol",
       "solcConfig": {
         "version": "0.8.10",
@@ -979,14 +936,16 @@
         "hardhat/console.sol",
         "./Common/DataTypes.sol",
         "./Common/Governance.sol",
-        "./Modules/RBOwner.sol",
-        "@aave/lens-protocol/contracts/interfaces/ILensHub.sol"
+        "./Common/LensInteraction.sol",
+        "./Common/ERC20Interaction.sol"
       ],
       "versionPragmas": [
         "^0.8.10"
       ],
       "artifacts": [
-        "hub"
+        "IRBOwner",
+        "hub",
+        "utils"
       ]
     },
     "/Users/andy/my_repos/executablepost/contracts/Mock/mockDAI.sol": {

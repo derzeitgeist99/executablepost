@@ -30,17 +30,17 @@ let postStruct
 describe("Testing postRBOwner", async () => {
 
     before(async () => {
-        ({ hub, rbOwner } = await deployAllContracts());
+        ({ hub } = await deployAllContracts());
         ({ governance, user, partyA, partyB } = await getNamedSigners());
         dai = new ethers.Contract(addressBook.ERC20.local.DAI, DaiAbi.abi, governance)
         //setUp disptacher (ie contract that can post on behalf of profile)
-        await lensSetDispatcher(rbOwner.address)
+        await lensSetDispatcher(hub.address)
 
 
     })
 
     it("Should create post using struct", async () => {
-        tx = await dai.connect(user).approve(rbOwner.address, amount)
+        tx = await dai.connect(user).approve(hub.address, amount)
         receipt = await tx.wait()
         allowance = await dai.connect(user).allowance(user.address, hub.address)
 
