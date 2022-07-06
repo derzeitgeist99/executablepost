@@ -27,7 +27,7 @@ let receipt
 let postId
 let postStruct
 
-describe("Testing postRBOwner", async () => {
+describe("Testing post", async () => {
 
     before(async () => {
         ({ hub } = await deployAllContracts());
@@ -81,7 +81,7 @@ describe("Testing postRBOwner", async () => {
         }
 
 
-        tx = await hub.connect(user).postRBOwner(postStruct, lensPostStruct, { gasLimit: 3000000 })
+        tx = await hub.connect(user).post(postStruct, lensPostStruct, { gasLimit: 3000000 })
         receipt = await tx.wait()
 
         postId = (ethers.utils.defaultAbiCoder.decode(["bytes32"], receipt.events[3].topics[1]))[0]

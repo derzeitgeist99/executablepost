@@ -14,7 +14,7 @@ contract utils {
 }
 
 interface IRBOwner {
-    function postRBOwner(
+    function post(
         DataTypes.Post calldata,
         LensDataTypes.PostData calldata
 )
@@ -41,7 +41,7 @@ interface IRBOwner {
         return MapIdToPost[_id];
     }
 
-    function postRBOwner(DataTypes.Post memory _post, LensDataTypes.PostData calldata _lensPost)
+    function post(DataTypes.Post memory _post, LensDataTypes.PostData calldata _lensPost)
     public  
     checkERCBalance(_post.amount, _post.currency, _post.owner)
     checkLensBeforePost(_lensPost.profileId)

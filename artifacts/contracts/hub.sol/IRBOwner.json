@@ -141,7 +141,7 @@
           "type": "tuple"
         }
       ],
-      "name": "postRBOwner",
+      "name": "post",
       "outputs": [
         {
           "internalType": "bytes32",
