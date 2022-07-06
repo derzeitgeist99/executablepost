@@ -16,9 +16,8 @@ contract utils {
         if(post.amount == 0) {revert DataTypes.executablePostNotFound();}
         if(post.resolvetype != _resolveType ) {revert DataTypes.cannotUseThisFunctionToResolve(_resolveType,post.resolvetype);}
         if(post.resolver !=msg.sender) {revert DataTypes.youAreNotResolverOfExecutablePost( post.resolver);}
-        if(post.resolveAfter < block.timestamp) {revert DataTypes.youTryToResolveTooEarly(block.timestamp,post.resolveAfter);}
+        if(post.resolveAfter > block.timestamp) {revert DataTypes.youTryToResolveTooEarly(block.timestamp,post.resolveAfter);}
         if(post.resolved) {revert DataTypes.alreadyResolved();}
-
         _;
     }
 
