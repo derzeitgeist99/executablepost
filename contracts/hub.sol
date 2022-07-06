@@ -11,6 +11,17 @@ contract utils {
         return keccak256(abi.encodePacked(block.timestamp,tx.origin));
     }
 
+    modifier canResolve (DataTypes.Post storage post, DataTypes.ResolveTypes _resolveType ) {
+        
+        if(post.amount == 0) {revert DataTypes.executablePostNotFound();}
+        if(post.resolvetype != _resolveType ) {revert DataTypes.cannotUseThisFunctionToResolve(_resolveType,post.resolvetype);}
+        if(post.resolver !=msg.sender) {revert DataTypes.youAreNotResolverOfExecutablePost( post.resolver);}
+        if(post.resolveAfter < block.timestamp) {revert DataTypes.youTryToResolveTooEarly(block.timestamp,post.resolveAfter);}
+        if(post.resolved) {revert DataTypes.alreadyResolved();}
+
+        _;
+    }
+
 }
 
 interface IRBOwner {
@@ -58,7 +69,6 @@ interface IRBOwner {
         _post.lensPostInfo.profileId = _lensPost.profileId;
         _post.lensPostInfo.initialPubId = initialPubId;
 
-
         MapIdToPost[id] = _post;
         MapAddressToPost[msg.sender] = _post;
 
@@ -66,6 +76,19 @@ interface IRBOwner {
         
         return (id,initialPubId );
 
+    }
+
+
+
+    function resolveByOwner(
+        bytes32 id, 
+        uint8 resultPartyA,
+        uint8 resultPartyB,
+        LensDataTypes.PostData calldata _lensPost) 
+        public
+        canResolve(MapIdToPost[id],DataTypes.ResolveTypes.ResolveByOwner)
+        {
+            console.log("here!");
 
     }
 

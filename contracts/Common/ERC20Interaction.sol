@@ -7,6 +7,8 @@ import "../Common/Governance.sol";
 
 contract ERC20Interaction is governanceUtil{
      modifier checkERCBalance(uint256 _amount, address _currency, address _owner ) {
+        if(_amount < 1) {revert DataTypes.amountMustBeGreaterThanZero();}
+
         IERC20 erc = IERC20(_currency);
 
         uint ercAllowance = erc.allowance(_owner, address(this));

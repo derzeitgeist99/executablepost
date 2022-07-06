@@ -23,6 +23,11 @@
               "type": "address"
             },
             {
+              "internalType": "address",
+              "name": "resolver",
+              "type": "address"
+            },
+            {
               "internalType": "uint256",
               "name": "resolveAfter",
               "type": "uint256"

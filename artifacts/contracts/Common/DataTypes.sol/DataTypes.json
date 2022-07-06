@@ -15,6 +15,37 @@
       "type": "error"
     },
     {
+      "inputs": [],
+      "name": "alreadyResolved",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "amountMustBeGreaterThanZero",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "enum DataTypes.ResolveTypes",
+          "name": "_resolveTypeGiven",
+          "type": "uint8"
+        },
+        {
+          "internalType": "enum DataTypes.ResolveTypes",
+          "name": "_resolveTypeNeeded",
+          "type": "uint8"
+        }
+      ],
+      "name": "cannotUseThisFunctionToResolve",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "executablePostNotFound",
+      "type": "error"
+    },
+    {
       "inputs": [
         {
           "internalType": "uint256",
@@ -47,6 +78,33 @@
       "type": "error"
     },
     {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_ResolverAddress",
+          "type": "address"
+        }
+      ],
+      "name": "youAreNotResolverOfExecutablePost",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_currentTimeStamp",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_requiredTimeStamp",
+          "type": "uint256"
+        }
+      ],
+      "name": "youTryToResolveTooEarly",
+      "type": "error"
+    },
+    {
       "anonymous": false,
       "inputs": [
         {
@@ -73,8 +131,8 @@
       "type": "event"
     }
   ],
-  "bytecode": "0x60566050600b82828239805160001a6073146043577f4e487b7100000000000000000000000000000000000000000000000000000000600052600060045260246000fd5b30600052607381538281f3fe73000000000000000000000000000000000000000030146080604052600080fdfea264697066735822122057e3041be4edf5aa73b4a36bcbc9fb80716c3eb8c03280790b356fc82e5138b964736f6c634300080a0033",
-  "deployedBytecode": "0x73000000000000000000000000000000000000000030146080604052600080fdfea264697066735822122057e3041be4edf5aa73b4a36bcbc9fb80716c3eb8c03280790b356fc82e5138b964736f6c634300080a0033",
+  "bytecode": "0x60566050600b82828239805160001a6073146043577f4e487b7100000000000000000000000000000000000000000000000000000000600052600060045260246000fd5b30600052607381538281f3fe73000000000000000000000000000000000000000030146080604052600080fdfea26469706673582212203d11e2bd40bea7283c223e720b03d1fb643957dd82e7a00b3e4131140bac388e64736f6c634300080a0033",
+  "deployedBytecode": "0x73000000000000000000000000000000000000000030146080604052600080fdfea26469706673582212203d11e2bd40bea7283c223e720b03d1fb643957dd82e7a00b3e4131140bac388e64736f6c634300080a0033",
   "linkReferences": {},
   "deployedLinkReferences": {}
 }

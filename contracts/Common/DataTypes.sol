@@ -7,8 +7,16 @@ import 'hardhat/console.sol';
 library DataTypes {
 
     error UserNotAllowed (string );
+    error amountMustBeGreaterThanZero ();
     error insufficientBalance(uint balance, uint required);
     error insufficientAllowance(uint allowance, uint required);
+
+    //Errors possible during resolution
+    error executablePostNotFound();
+    error cannotUseThisFunctionToResolve(ResolveTypes _resolveTypeGiven, ResolveTypes _resolveTypeNeeded);
+    error youAreNotResolverOfExecutablePost(address _ResolverAddress);
+    error youTryToResolveTooEarly(uint256 _currentTimeStamp, uint _requiredTimeStamp);
+    error alreadyResolved();
 
    
     event idCreated (bytes32  indexed _id);
@@ -19,11 +27,13 @@ library DataTypes {
         ResolveByOwner,
         ResolveByOracle
     }
+   
 
     struct Post {
         address partyA;
         address partyB;
         address owner;
+        address resolver;
         uint256 resolveAfter;
         uint256 automaticallyResolveAfter;
         uint256 amount;
