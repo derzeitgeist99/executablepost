@@ -39,7 +39,7 @@ describe("Testing postRBOwner", async () => {
 
     })
 
-    it.only("Should create post using struct", async () => {
+    it("Should create post using struct", async () => {
         tx = await dai.connect(user).approve(rbOwner.address, amount)
         receipt = await tx.wait()
         allowance = await dai.connect(user).allowance(user.address, hub.address)

@@ -2,6 +2,7 @@
 pragma solidity ^0.8.10;
 import 'hardhat/console.sol';
 import "./Common/DataTypes.sol";
+import "./Common/Governance.sol";
 import "./Modules/RBOwner.sol";
 import {DataTypes as LensDataTypes} from "@aave/lens-protocol/contracts/interfaces/ILensHub.sol";
 
@@ -9,17 +10,19 @@ import {DataTypes as LensDataTypes} from "@aave/lens-protocol/contracts/interfac
 DataTypes
 CommonLogic */
 
-contract hub {
+contract hub is governanceUtil{
 
     //This hub calls different contracts (modules) based on the logic of redemption
     // Here we connect them
     // ToDo: Add modifier to only gov!!!
 
-    //constructor ()
+    constructor () {
+        governance = msg.sender;
+    }
 
     IRBOwner iRBOwner;
     //IRBOracle iRBOracle;
-    function setIRBOwner(address _address) public {
+    function setIRBOwner(address _address) public onlyGov{
         iRBOwner = IRBOwner(_address);
         emit DataTypes.contractAddressChanged(_address);
 

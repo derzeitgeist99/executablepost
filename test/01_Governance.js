@@ -38,7 +38,7 @@ describe("Testing Governance", async () => {
 
     })
 
-    it.skip("Should change the Treasury Address", async () => {
+    it("Should change the Treasury Address", async () => {
 
         let tx = await rbOwner.connect(governance)._setTreasuryAddress(address3.address)
         let receipt = await tx.wait()
@@ -54,8 +54,8 @@ describe("Testing Governance", async () => {
     })
 
 
-    it.skip("should revert contract Addresses ", async () => {
-        await expect(hub.connect(user).setIRBOwner(address3.address)).to.be.rejectedWith("UnauthorizedAccount")
+    it("should revert contract Addresses ", async () => {
+        await expect(hub.connect(user).setIRBOwner(address3.address)).to.be.rejectedWith("UserNotAllowed")
     })
     //cannot get the error message. so keeping this test as pending
     it.skip("should revert Treasury address change", async () => {

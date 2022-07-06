@@ -949,8 +949,8 @@
       ]
     },
     "/Users/andy/my_repos/executablepost/contracts/hub.sol": {
-      "lastModificationDate": 1657027023658,
-      "contentHash": "c83616a5d1c0402509872e112e9d4d07",
+      "lastModificationDate": 1657033459630,
+      "contentHash": "c9c6b416553f2442eabdce041f317484",
       "sourceName": "contracts/hub.sol",
       "solcConfig": {
         "version": "0.8.10",
@@ -978,6 +978,7 @@
       "imports": [
         "hardhat/console.sol",
         "./Common/DataTypes.sol",
+        "./Common/Governance.sol",
         "./Modules/RBOwner.sol",
         "@aave/lens-protocol/contracts/interfaces/ILensHub.sol"
       ],
