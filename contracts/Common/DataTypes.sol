@@ -17,6 +17,7 @@ library DataTypes {
     error youAreNotResolverOfExecutablePost(address _ResolverAddress);
     error youTryToResolveTooEarly(uint256 _currentTimeStamp, uint _requiredTimeStamp);
     error alreadyResolved();
+    error partyAPlusPartyBIsNot100();
 
    
     event idCreated (bytes32  indexed _id);

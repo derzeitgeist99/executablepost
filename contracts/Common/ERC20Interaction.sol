@@ -25,14 +25,18 @@ contract ERC20Interaction is governanceUtil{
         _;
     }
 
-        function transferERC(uint256 _amount, address _currency, address _owner) internal {
+        function transferFromERC(uint256 _amount, address _currency, address _owner) internal {
          IERC20 erc = IERC20(_currency);
-         uint allowance = erc.allowance(_owner, treasury);
-         console.log(allowance);
-         uint balance = erc.balanceOf(_owner);
-         console.log(balance);
+        //  uint allowance = erc.allowance(_owner, treasury);
+        //  console.log(allowance);
+        //  uint balance = erc.balanceOf(_owner);
+        //  console.log(balance);
          erc.transferFrom(_owner, treasury, _amount);
     }
+        function transferERC(uint256 _amount, address _currency, address _to) internal {
+            IERC20  erc = IERC20(_currency);
+            erc.transfer(_to, _amount);
+        }
 
 
 }

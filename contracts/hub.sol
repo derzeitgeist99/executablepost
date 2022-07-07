@@ -21,6 +21,15 @@ contract utils {
         _;
     }
 
+    modifier is100 (uint8 _resultPartyA, uint8 _resultPartyB) {
+        if (_resultPartyA + _resultPartyB != 100) { revert DataTypes.partyAPlusPartyBIsNot100();}
+        _;
+    }
+
+    function calculateTransferAmount(uint8 _result, uint _amount) internal returns (uint ){
+        return (_result*_amount)/100;
+    }
+
 }
 
 interface IRBOwner {
@@ -61,7 +70,7 @@ interface IRBOwner {
        
         //this is last before return
         // still is this OK, knowing that we will be still changing state in the hub?
-        transferERC(_post.amount, _post.currency, _post.owner);
+        transferFromERC(_post.amount, _post.currency, _post.owner);
         //we transfer and then the post. So the post can go like "I just locked XY into executable post"
 
        initialPubId = postToLens(_lensPost);
@@ -80,14 +89,23 @@ interface IRBOwner {
 
 
     function resolveByOwner(
-        bytes32 id, 
-        uint8 resultPartyA,
-        uint8 resultPartyB,
+        bytes32 _id, 
+        uint8 _resultPartyA,
+        uint8 _resultPartyB,
         LensDataTypes.PostData calldata _lensPost) 
         public
-        canResolve(MapIdToPost[id],DataTypes.ResolveTypes.ResolveByOwner)
+        canResolve(MapIdToPost[_id],DataTypes.ResolveTypes.ResolveByOwner)
+        is100(_resultPartyA, _resultPartyB)
         {
-            console.log("here!");
+
+            DataTypes.Post storage ep = MapIdToPost[_id];
+            //transfer for partyA
+
+            transferERC(ep.amount*_resultPartyA/100,ep.currency,ep.partyA);
+            // transfer to partyB
+            transferERC(ep.amount*_resultPartyB/100,ep.currency,ep.partyB);
+
+            //post -as comment
 
     }
 

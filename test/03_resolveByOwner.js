@@ -29,7 +29,14 @@ let postId
 
 let postInputStruct
 
-let defaultResolutionInputs
+
+let defaultResolutionInputs = [
+    postId,
+    50,
+    50,
+    lensPostStruct,
+    { gasLimit: 3 * 1000 * 1000 }
+]
 
 
 describe.only("Testing post Happy Path", async () => {
@@ -44,27 +51,48 @@ describe.only("Testing post Happy Path", async () => {
 
     })
 
-    it.skip("Should resolve post by Owner", async () => {
+    it("Should resolve post by Owner", async () => {
 
         //create post
 
         postInputStruct = createPostStruct(user, partyA, partyB)
-        tx = await dai.connect(user).approve(hub.address, postInputStruct.amount)
-        const initialBalances = await getDAIBalances(dai, [user.address, hub.address]);
+        tx = await dai.connect(user).approve(hub.address, postInputStruct.amount);
+        // why this isnot waiting?
+        await tx.wait()
+
+
+        let initialBalances = await getDAIBalances(dai, [partyA.address, partyB.address, hub.address]);
         ({ postId, postStruct } = await newPost(hub, user, postInputStruct, lensPostStruct))
 
+        initialBalances = await getDAIBalances(dai, [partyA.address, partyB.address, hub.address]);
 
-
-        defaultResolutionInputs[0] = postId
+        let resolutionInputs = [...defaultResolutionInputs]
+        resolutionInputs[0] = postId
 
         //resolve post
-        tx = await hub.connect(user).resolveByOwner(...defaultResolutionInputs)
+        tx = await hub.connect(user).resolveByOwner(...resolutionInputs)
         receipt = await tx.wait()
+
+        const endingBalances = await getDAIBalances(dai, [partyA.address, partyB.address, hub.address]);
+        const expectedEndingBalances = {
+            "partyA": initialBalances[0] + parseInt(postStruct.amount, 10) * resolutionInputs[1] / 100,
+            "partyB": initialBalances[1] + parseInt(postStruct.amount, 10) * resolutionInputs[1] / 100,
+            "hub": initialBalances[2] - parseInt(postStruct.amount, 10)
+        }
+
+        console.log("Initial Hub", initialBalances[2])
+        console.log("Expected Hub", expectedEndingBalances.hub)
+        console.log("Ending Hub", endingBalances[2])
+
+        expect(expectedEndingBalances.partyA, "partyA balance").to.equal(endingBalances[0])
+        expect(expectedEndingBalances.partyB, "partyB balance").to.equal(endingBalances[1])
+        expect(expectedEndingBalances.hub, "hub balance").to.equal(endingBalances[2])
+
 
     })
 })
 
-describe.only("Testing post UnHappy Path", async () => {
+describe("Testing post UnHappy Path", async () => {
 
 
     before(async () => {
@@ -82,14 +110,6 @@ describe.only("Testing post UnHappy Path", async () => {
         ({ postId, postStruct } = await newPost(hub, user, postInputStruct, lensPostStruct))
 
 
-
-        defaultResolutionInputs = [
-            postId,
-            50,
-            50,
-            lensPostStruct,
-            { gasLimit: 3 * 1000 * 1000 }
-        ]
 
         console.log("Calling from Before. Using this ID: ", defaultResolutionInputs[0])
 
@@ -111,6 +131,23 @@ describe.only("Testing post UnHappy Path", async () => {
         console.log("Calling from Before. Using this ID: ", resolutionInputs[0])
         await expect(hub.connect(partyA).resolveByOwner(...resolutionInputs))
             .to.be.rejectedWith("youAreNotResolverOfExecutablePost")
+    })
+    it("Should reject because partyAPlusPartyBIsNot100()", async () => {
+        //Too high
+        let resolutionInputs = [...defaultResolutionInputs]
+        resolutionInputs[1] = 51;
+        resolutionInputs[2] = 50;
+        await expect(hub.connect(user).resolveByOwner(...resolutionInputs))
+            .to.be.rejectedWith("partyAPlusPartyBIsNot100")
+
+        //Too Low
+        resolutionInputs = [...defaultResolutionInputs]
+        resolutionInputs[1] = 49;
+        resolutionInputs[2] = 50;
+        await expect(hub.connect(user).resolveByOwner(...resolutionInputs))
+            .to.be.rejectedWith("partyAPlusPartyBIsNot100")
+
+
     })
     it.skip("Should reject because alreadyResolved()")
     it("Should reject because cannotUseThisFunctionToResolve()", async () => {
@@ -144,4 +181,5 @@ describe.only("Testing post UnHappy Path", async () => {
             .to.be.rejectedWith("youTryToResolveTooEarly")
 
     })
+    it("Should test transfer from and transfer")
 })
