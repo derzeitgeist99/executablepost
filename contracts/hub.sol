@@ -96,6 +96,7 @@ interface IRBOwner {
         public
         canResolve(MapIdToPost[_id],DataTypes.ResolveTypes.ResolveByOwner)
         is100(_resultPartyA, _resultPartyB)
+        checkLensBeforePost(_commentData.profileId)
     
         {
 
@@ -109,6 +110,8 @@ interface IRBOwner {
             //post to lens as comment to inital post
             _commentData = createCommentStruct(ep.lensPostInfo, _commentData);
             uint256 commentId = commentToLens(_commentData);
+
+            ep.resolved = true;
             emit DataTypes.lensPostCreated(commentId);
             
 

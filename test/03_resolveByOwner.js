@@ -39,7 +39,7 @@ let defaultResolutionInputs = [
 ]
 
 
-describe.only("Testing resovleByOwner Happy Path", async () => {
+describe("Testing resovleByOwner Happy Path", async () => {
 
     before(async () => {
         ({ hub } = await deployAllContracts());
@@ -66,17 +66,19 @@ describe.only("Testing resovleByOwner Happy Path", async () => {
 
         initialBalances = await getDAIBalances(dai, [partyA.address, partyB.address, hub.address]);
 
+        //**************************<<<< Resolve Post >>>>**************************
         let resolutionInputs = [...defaultResolutionInputs]
         resolutionInputs[0] = postId
 
-            //**************************<<<< Resolve Post >>>>**************************
         tx = await hub.connect(user).resolveByOwner(...resolutionInputs)
         receipt = await tx.wait()
+
+            //*********************** <<<< Testing If Lens Posted >>>> ***********************
 
         commentId = (ethers.utils.defaultAbiCoder.decode(["uint256"], receipt.events[3].topics[1]))[0]
         expect(parseInt(commentId, 10), "did it Post to Lens").to.be.greaterThan(1)
 
-
+        //*********************** <<<< Testing Balances >>>> ***********************
         const endingBalances = await getDAIBalances(dai, [partyA.address, partyB.address, hub.address]);
         const expectedEndingBalances = {
             "partyA": initialBalances[0] + parseInt(postStruct.amount, 10) * resolutionInputs[1] / 100,
@@ -87,6 +89,11 @@ describe.only("Testing resovleByOwner Happy Path", async () => {
         expect(expectedEndingBalances.partyA, "partyA balance").to.equal(endingBalances[0])
         expect(expectedEndingBalances.partyB, "partyB balance").to.equal(endingBalances[1])
         expect(expectedEndingBalances.hub, "hub balance").to.equal(endingBalances[2])
+
+        //*********************** <<<< Testing If Resolved = True >>>> ***********************
+        postStruct = await hub.getPostById(postId)
+        expect(postStruct.resolved).to.be.true
+
 
     })
 })
@@ -142,7 +149,15 @@ describe("Testing resolveByOwner UnHappy Path", async () => {
 
 
     })
-    it.skip("Should reject because alreadyResolved()")
+    it("should reject because LensProfile does not exist, throws: TokenDoesNotExist()", async () => {
+        //need a deep copy here since I am changing nested level...
+        let resolutionInputs = JSON.parse(JSON.stringify(defaultResolutionInputs))
+        resolutionInputs[3].profileId = 234
+
+        await expect(hub.connect(user).resolveByOwner(...resolutionInputs))
+            .to.be.rejectedWith("TokenDoesNotExist")
+
+    })
     it("Should reject because cannotUseThisFunctionToResolve()", async () => {
 
         // here I need to post with different resolveType. 
@@ -174,5 +189,20 @@ describe("Testing resolveByOwner UnHappy Path", async () => {
             .to.be.rejectedWith("youTryToResolveTooEarly")
 
     })
+    it("Should reject because alreadyResolved()", async () => {
+        let newPostInputStruct = { ...postInputStruct }
+        tx = await dai.connect(user).approve(hub.address, newPostInputStruct.amount);
+        await tx.wait();
+        ({ postId, postStruct } = await newPost(hub, user, newPostInputStruct, lensPostStruct))
+
+        let resolutionInputs = [...defaultResolutionInputs]
+        resolutionInputs[0] = postId
+        tx = await hub.connect(user).resolveByOwner(...resolutionInputs)
+        tx.wait()
+        await expect(hub.connect(user).resolveByOwner(...resolutionInputs)).to.be.rejectedWith("alreadyResolved")
+
+    }
+
+    )
     it("Should test transfer from and transfer")
 })
