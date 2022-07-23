@@ -5,7 +5,7 @@ import 'hardhat/console.sol';
 
 
 library DataTypes {
-
+//**************************<<<< Errors >>>>**************************"
     error UserNotAllowed (string );
     error amountMustBeGreaterThanZero ();
     error insufficientBalance(uint balance, uint required);
@@ -20,16 +20,20 @@ library DataTypes {
     error partyAPlusPartyBIsNot100();
 
    
+//**************************<<<< Events >>>>**************************"
     event idCreated (bytes32  indexed _id);
     event contractAddressChanged (address indexed _newAddress);
+    event lensPostCreated (uint256 indexed _lensPostId);
 
 
+//**************************<<<< Enums >>>>**************************"
     enum ResolveTypes {
         ResolveByOwner,
         ResolveByOracle
     }
    
 
+//**************************<<<< Structs >>>>**************************"
     struct Post {
         address partyA;
         address partyB;

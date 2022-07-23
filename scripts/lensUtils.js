@@ -31,7 +31,7 @@ const lensGetPostById = async (profileId, pubId) => {
     const result = await lensHub.getPub(profileId, pubId)
 
     const pubCount = await lensHub.getPubCount(profileId)
-    console.log("Pub Count", parseInt(pubCount, 16));
+    //console.log("Pub Count", parseInt(pubCount, 16));
     return result
 
 

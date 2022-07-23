@@ -10,6 +10,19 @@ const lensPostStruct = {
     "referenceModuleInitData": defaultAbiCoder.encode(['bool'], [true]),
 }
 
+const lensCommentStruct = {
+    "profileId": 1,
+    "contentURI": Math.random().toString(),
+    "profileIdPointed": 1,
+    "pubIdPointed": 1,
+    "collectModule": collectModule,
+    "collectModuleInitData": defaultAbiCoder.encode(['bool'], [true]),
+    "referenceModule": '0x0000000000000000000000000000000000000000',
+    "referenceModuleData": defaultAbiCoder.encode(['bool'], [true]),
+    "referenceModuleInitData": defaultAbiCoder.encode(['bool'], [true]),
+}
+
+
 const { ethers } = require("hardhat");
 const addressBook = require("../externalcontractaddresses.json")
 
@@ -41,4 +54,4 @@ const createPostStruct = (user, partyA, partyB) => {
     return postStruct
 }
 
-module.exports = { lensPostStruct, createPostStruct }
+module.exports = { lensPostStruct, lensCommentStruct, createPostStruct }

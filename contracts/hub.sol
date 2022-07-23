@@ -92,10 +92,11 @@ interface IRBOwner {
         bytes32 _id, 
         uint8 _resultPartyA,
         uint8 _resultPartyB,
-        LensDataTypes.PostData calldata _lensPost) 
+        LensDataTypes.CommentData memory _commentData) 
         public
         canResolve(MapIdToPost[_id],DataTypes.ResolveTypes.ResolveByOwner)
         is100(_resultPartyA, _resultPartyB)
+    
         {
 
             DataTypes.Post storage ep = MapIdToPost[_id];
@@ -105,7 +106,11 @@ interface IRBOwner {
             // transfer to partyB
             transferERC(ep.amount*_resultPartyB/100,ep.currency,ep.partyB);
 
-            //post -as comment
+            //post to lens as comment to inital post
+            _commentData = createCommentStruct(ep.lensPostInfo, _commentData);
+            uint256 commentId = commentToLens(_commentData);
+            emit DataTypes.lensPostCreated(commentId);
+            
 
     }
 

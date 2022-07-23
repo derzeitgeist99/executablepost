@@ -16,7 +16,7 @@ const { lensSetDispatcher, lensGetPostById } = require("../scripts/lensUtils");
 
 
 // Inputs
-const { lensPostStruct, createPostStruct } = require("../scripts/defaultInputStructs");
+const { lensPostStruct, lensCommentStruct, createPostStruct } = require("../scripts/defaultInputStructs");
 const { newPost } = require("../scripts/newExecutablePost");
 const { defaultAbiCoder, keccak256 } = require("ethers/lib/utils");
 let postStruct
@@ -34,12 +34,12 @@ let defaultResolutionInputs = [
     postId,
     50,
     50,
-    lensPostStruct,
+    lensCommentStruct,
     { gasLimit: 3 * 1000 * 1000 }
 ]
 
 
-describe.only("Testing post Happy Path", async () => {
+describe.only("Testing resovleByOwner Happy Path", async () => {
 
     before(async () => {
         ({ hub } = await deployAllContracts());
@@ -53,7 +53,7 @@ describe.only("Testing post Happy Path", async () => {
 
     it("Should resolve post by Owner", async () => {
 
-        //create post
+        //**************************<<<< Create Post >>>>**************************
 
         postInputStruct = createPostStruct(user, partyA, partyB)
         tx = await dai.connect(user).approve(hub.address, postInputStruct.amount);
@@ -69,9 +69,13 @@ describe.only("Testing post Happy Path", async () => {
         let resolutionInputs = [...defaultResolutionInputs]
         resolutionInputs[0] = postId
 
-        //resolve post
+            //**************************<<<< Resolve Post >>>>**************************
         tx = await hub.connect(user).resolveByOwner(...resolutionInputs)
         receipt = await tx.wait()
+
+        commentId = (ethers.utils.defaultAbiCoder.decode(["uint256"], receipt.events[3].topics[1]))[0]
+        expect(parseInt(commentId, 10), "did it Post to Lens").to.be.greaterThan(1)
+
 
         const endingBalances = await getDAIBalances(dai, [partyA.address, partyB.address, hub.address]);
         const expectedEndingBalances = {
@@ -80,19 +84,14 @@ describe.only("Testing post Happy Path", async () => {
             "hub": initialBalances[2] - parseInt(postStruct.amount, 10)
         }
 
-        console.log("Initial Hub", initialBalances[2])
-        console.log("Expected Hub", expectedEndingBalances.hub)
-        console.log("Ending Hub", endingBalances[2])
-
         expect(expectedEndingBalances.partyA, "partyA balance").to.equal(endingBalances[0])
         expect(expectedEndingBalances.partyB, "partyB balance").to.equal(endingBalances[1])
         expect(expectedEndingBalances.hub, "hub balance").to.equal(endingBalances[2])
 
-
     })
 })
 
-describe("Testing post UnHappy Path", async () => {
+describe("Testing resolveByOwner UnHappy Path", async () => {
 
 
     before(async () => {
@@ -108,10 +107,7 @@ describe("Testing post UnHappy Path", async () => {
         let tx = await dai.connect(user).approve(hub.address, postInputStruct.amount);
         receipt = await tx.wait();
         ({ postId, postStruct } = await newPost(hub, user, postInputStruct, lensPostStruct))
-
-
-
-        console.log("Calling from Before. Using this ID: ", defaultResolutionInputs[0])
+        defaultResolutionInputs[0] = postId
 
     })
 
@@ -119,8 +115,6 @@ describe("Testing post UnHappy Path", async () => {
 
         let resolutionInputs = [...defaultResolutionInputs]
         resolutionInputs[0] = keccak256(defaultAbiCoder.encode(["string"], ["IdontExist"]))
-        console.log("Calling from Before. Using this ID: ", resolutionInputs[0])
-
 
         await expect(hub.connect(user).resolveByOwner(...resolutionInputs))
             .to.be.rejectedWith("executablePostNotFound")
@@ -128,7 +122,6 @@ describe("Testing post UnHappy Path", async () => {
     it("Should reject because youAreNotResolverOfExecutablePost()", async () => {
 
         let resolutionInputs = [...defaultResolutionInputs]
-        console.log("Calling from Before. Using this ID: ", resolutionInputs[0])
         await expect(hub.connect(partyA).resolveByOwner(...resolutionInputs))
             .to.be.rejectedWith("youAreNotResolverOfExecutablePost")
     })

@@ -4,6 +4,7 @@ import 'hardhat/console.sol';
 
 import {ILensHub, DataTypes as LensDataTypes} from "@aave/lens-protocol/contracts/interfaces/ILensHub.sol";
 import {Errors as LensErrors} from "@aave/lens-protocol/contracts/libraries/Errors.sol";
+import {DataTypes} from "./DataTypes.sol";
 
 contract lensInteraction {
     ILensHub lens;
@@ -23,6 +24,19 @@ contract lensInteraction {
 
     function postToLens(LensDataTypes.PostData calldata _lensPost) internal returns(uint256) {
         return lens.post(_lensPost);
+    }
+
+    function createCommentStruct(DataTypes.LensPostInfo storage _originalLensPost, LensDataTypes.CommentData memory _commentData) internal returns (LensDataTypes.CommentData memory){
+        _commentData.profileIdPointed = _originalLensPost.profileId;
+        _commentData.pubIdPointed = _originalLensPost.initialPubId;
+
+        return(_commentData);
+
+    }
+
+     function commentToLens(LensDataTypes.CommentData memory _commentData) internal returns(uint256) {
+        return lens.comment(_commentData);
+
     }
 
 

@@ -869,8 +869,8 @@
       ]
     },
     "/Users/andy/my_repos/executablepost/contracts/Common/DataTypes.sol": {
-      "lastModificationDate": 1657202403313,
-      "contentHash": "e9414f0b12c8b6182a734966e5bc5b68",
+      "lastModificationDate": 1658585462520,
+      "contentHash": "0522cac883d2cd46378157cfb005fd75",
       "sourceName": "contracts/Common/DataTypes.sol",
       "solcConfig": {
         "version": "0.8.10",
@@ -906,8 +906,8 @@
       ]
     },
     "/Users/andy/my_repos/executablepost/contracts/hub.sol": {
-      "lastModificationDate": 1657207214136,
-      "contentHash": "9551a470165e9cf73a03f05f171397ff",
+      "lastModificationDate": 1658585501377,
+      "contentHash": "219b57f6e22280702bf972fa58bda84f",
       "sourceName": "contracts/hub.sol",
       "solcConfig": {
         "version": "0.8.10",
@@ -1096,8 +1096,8 @@
       ]
     },
     "/Users/andy/my_repos/executablepost/contracts/Common/LensInteraction.sol": {
-      "lastModificationDate": 1657030979814,
-      "contentHash": "5968369858872ac5cbeaa4bfd5f27df9",
+      "lastModificationDate": 1658584435704,
+      "contentHash": "eedba06c74affa87a91430b9e3f13b55",
       "sourceName": "contracts/Common/LensInteraction.sol",
       "solcConfig": {
         "version": "0.8.10",
@@ -1125,7 +1125,8 @@
       "imports": [
         "hardhat/console.sol",
         "@aave/lens-protocol/contracts/interfaces/ILensHub.sol",
-        "@aave/lens-protocol/contracts/libraries/Errors.sol"
+        "@aave/lens-protocol/contracts/libraries/Errors.sol",
+        "./DataTypes.sol"
       ],
       "versionPragmas": [
         "^0.8.10"
