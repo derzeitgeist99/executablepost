@@ -26,7 +26,43 @@ const lensCommentStruct = {
 const { ethers } = require("hardhat");
 const addressBook = require("../externalcontractaddresses.json")
 
-const createPostStruct = (user, partyA, partyB) => {
+const resolveByOwner = {
+    "resolveType": 0,
+    "metric": "number of puddles",
+    "sourceString": "my window",
+    "sourceAddress": "0x8464135c8F25Da09e49BC8782676a84730C318bC",
+    "valueUint": 3,
+    "operator": 1
+
+}
+
+const resolveByOracle = {
+    "resolveType": 1,
+    "metric": "ETHUSD",
+    "sourceString": "",
+    "sourceAddress": "0x8464135c8F25Da09e49BC8782676a84730C318bC",
+    "valueUint": 5000,
+    "operator": 1
+
+}
+
+
+const createPostStruct = (user, partyA, partyB, resolveType = "ResolveByOwner") => {
+    let resolveConditions
+
+    switch (resolveType) {
+        case "ResolveByOwner":
+            resolveConditions = resolveByOwner
+            break;
+        case "ResolveByOracle":
+            resolveConditions = resolveByOracle
+            break;
+        default:
+            resolveConditions = resolveByOwner
+            break;
+    }
+
+
     postStruct = {
 
         "partyA": partyA.address,
@@ -38,20 +74,14 @@ const createPostStruct = (user, partyA, partyB) => {
         "resolveAfter": ethers.BigNumber.from(1000),
         "automaticallyResolveAfter": ethers.BigNumber.from(1200),
         "resolved": false,
-        "resolvetype": 0,
-        "resolveByOracleConditions": {
-            "price": ethers.BigNumber.from(0),
-            "operator": 0
-        },
-        "resolveByOwnerConditions": {
-            "resolver": user.address
-        },
+        "resolveConditions": resolveConditions,
         "lensPostInfo": {
             "profileId": 0,
             "initialPubId": 0,
             "resolvingPubId": 0
         }
     }
+
     return postStruct
 }
 

@@ -53,15 +53,30 @@
               "type": "bool"
             },
             {
-              "internalType": "enum DataTypes.ResolveTypes",
-              "name": "resolvetype",
-              "type": "uint8"
-            },
-            {
               "components": [
                 {
+                  "internalType": "enum DataTypes.ResolveTypes",
+                  "name": "resolveType",
+                  "type": "uint8"
+                },
+                {
+                  "internalType": "string",
+                  "name": "metric",
+                  "type": "string"
+                },
+                {
+                  "internalType": "string",
+                  "name": "sourceString",
+                  "type": "string"
+                },
+                {
+                  "internalType": "address",
+                  "name": "sourceAddress",
+                  "type": "address"
+                },
+                {
                   "internalType": "uint256",
-                  "name": "price",
+                  "name": "valueUint",
                   "type": "uint256"
                 },
                 {
@@ -70,20 +85,8 @@
                   "type": "uint8"
                 }
               ],
-              "internalType": "struct DataTypes.ResolveByOracleConditions",
-              "name": "resolveByOracleConditions",
-              "type": "tuple"
-            },
-            {
-              "components": [
-                {
-                  "internalType": "address",
-                  "name": "resolver",
-                  "type": "address"
-                }
-              ],
-              "internalType": "struct DataTypes.ResolveByOwnerConditions",
-              "name": "resolveByOwnerConditions",
+              "internalType": "struct DataTypes.ResolveConditions",
+              "name": "resolveConditions",
               "type": "tuple"
             },
             {

@@ -160,9 +160,9 @@ describe("Testing resolveByOwner UnHappy Path", async () => {
     })
     it("Should reject because cannotUseThisFunctionToResolve()", async () => {
 
-        // here I need to post with different resolveType. 
-        let newPostInputStruct = { ...postInputStruct }
-        newPostInputStruct.resolvetype = 1
+        // here I need to post with different resolveType. Creating deep copy
+        let newPostInputStruct = JSON.parse(JSON.stringify(postInputStruct))
+        newPostInputStruct.resolveConditions.resolveType = 1
         tx = await dai.connect(user).approve(hub.address, newPostInputStruct.amount);
         await tx.wait();
         ({ postId, postStruct } = await newPost(hub, user, newPostInputStruct, lensPostStruct))

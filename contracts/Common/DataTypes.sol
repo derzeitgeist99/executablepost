@@ -50,23 +50,19 @@ library DataTypes {
         uint256 amount;
         address currency;
         bool resolved;
-
-        ResolveTypes resolvetype;
-        ResolveByOracleConditions resolveByOracleConditions;
-        ResolveByOwnerConditions resolveByOwnerConditions;
+        ResolveConditions resolveConditions;
         LensPostInfo lensPostInfo;
-        // I assume this is gas inefficient as it creates empty struct also for unused data.
-        // Tried mapping ,but that limits me in using modules as separate contracts
 
     }
-    struct ResolveByOracleConditions {
-        uint256 price;
+
+
+    struct ResolveConditions {
+        ResolveTypes resolveType;
+        string metric;
+        string sourceString;
+        address sourceAddress;
+        uint256 valueUint;
         ResolveOperators operator;
-
-    }
-
-        struct ResolveByOwnerConditions {
-        address resolver;
     }
 
     struct LensPostInfo {

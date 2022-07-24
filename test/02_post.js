@@ -53,7 +53,7 @@ describe("Testing post", async () => {
         expect(postStruct.resolver, "resolver address").to.equal(user.address)
         expect(parseInt(postStruct.resolveAfter, 16), "resolveAfter").to.be.greaterThan(0)
         expect(parseInt(postStruct.automaticallyResolveAfter, 16), "AutomaticalyResolveAfter").to.be.greaterThan(parseInt(postStruct.resolveAfter, 16))
-        expect(postStruct.resolveByOwnerConditions[0], "resovler address").to.equal(user.address)
+        expect(postStruct.resolver, "resovler address").to.equal(user.address)
 
         //check balances
         const endingBalances = await getDAIBalances(dai, [user.address, hub.address])

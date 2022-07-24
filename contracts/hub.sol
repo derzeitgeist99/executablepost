@@ -14,7 +14,7 @@ contract utils {
     modifier canResolve (DataTypes.Post storage post, DataTypes.ResolveTypes _resolveType ) {
         
         if(post.amount == 0) {revert DataTypes.executablePostNotFound();}
-        if(post.resolvetype != _resolveType ) {revert DataTypes.cannotUseThisFunctionToResolve(_resolveType,post.resolvetype);}
+        if(post.resolveConditions.resolveType != _resolveType ) {revert DataTypes.cannotUseThisFunctionToResolve(_resolveType,post.resolveConditions.resolveType);}
         if(post.resolver !=msg.sender) {revert DataTypes.youAreNotResolverOfExecutablePost( post.resolver);}
         if(post.resolveAfter > block.timestamp) {revert DataTypes.youTryToResolveTooEarly(block.timestamp,post.resolveAfter);}
         if(post.resolved) {revert DataTypes.alreadyResolved();}
@@ -68,8 +68,6 @@ interface IRBOwner {
 
         id =generateId();
        
-        //this is last before return
-        // still is this OK, knowing that we will be still changing state in the hub?
         transferFromERC(_post.amount, _post.currency, _post.owner);
         //we transfer and then the post. So the post can go like "I just locked XY into executable post"
 
