@@ -31,6 +31,12 @@ library DataTypes {
         ResolveByOwner,
         ResolveByOracle
     }
+
+    enum ResolveOperators {
+        Equal,
+        GreaterOrEqual,
+        SmallerOrEqual
+    }
    
 
 //**************************<<<< Structs >>>>**************************"
@@ -54,7 +60,9 @@ library DataTypes {
 
     }
     struct ResolveByOracleConditions {
-        uint price;
+        uint256 price;
+        ResolveOperators operator;
+
     }
 
         struct ResolveByOwnerConditions {

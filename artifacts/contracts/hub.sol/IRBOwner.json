@@ -63,6 +63,11 @@
                   "internalType": "uint256",
                   "name": "price",
                   "type": "uint256"
+                },
+                {
+                  "internalType": "enum DataTypes.ResolveOperators",
+                  "name": "operator",
+                  "type": "uint8"
                 }
               ],
               "internalType": "struct DataTypes.ResolveByOracleConditions",

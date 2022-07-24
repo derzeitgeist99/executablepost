@@ -40,7 +40,8 @@ const createPostStruct = (user, partyA, partyB) => {
         "resolved": false,
         "resolvetype": 0,
         "resolveByOracleConditions": {
-            "price": ethers.BigNumber.from(0)
+            "price": ethers.BigNumber.from(0),
+            "operator": 0
         },
         "resolveByOwnerConditions": {
             "resolver": user.address
