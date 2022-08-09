@@ -1,12 +1,15 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.10;
 import 'hardhat/console.sol';
-import "./Common/DataTypes.sol";
-import "./Common/Governance.sol";
-import "./Common/LensInteraction.sol";
-import "./Common/ERC20Interaction.sol";
+import "./Helpers/DataTypes.sol";
+import "./Helpers/Governance.sol";
+import "./Helpers/LensInteraction.sol";
+import "./Helpers/ERC20Interaction.sol";
+import "./Helpers/OracleInteraction.sol";
+import "./Helpers/ComparationLogic.sol";
 
-contract utils {
+contract utils is OracleInteraction{
+    uint16 oracleTimestampTolerance;
     function generateId() internal view returns (bytes32) {
         return keccak256(abi.encodePacked(block.timestamp,tx.origin));
     }
@@ -26,9 +29,26 @@ contract utils {
         _;
     }
 
+    modifier isRoundIdOK(uint256 _roundId, DataTypes.ResolveConditions storage _resolveConditions) {
+        uint256 timestampForResolution = getOracleTimestamp( _resolveConditions.sourceAddress,_roundId);
+        if (timestampForResolution == 0) {revert DataTypes.oracleError("Timestamp is 0. Either roundId is wrong or oracle doesn't work"); }
+        uint256 absDelta = absDelta(timestampForResolution, _resolveConditions.timestamp);
+        if (absDelta > oracleTimestampTolerance ) {revert DataTypes.timestampDeltaGreaterThanTolerance();}
+        _;
+    }
+
     function calculateTransferAmount(uint8 _result, uint _amount) internal returns (uint ){
         return (_result*_amount)/100;
     }
+
+    function absDelta (uint256 _num1, uint256 _num2) internal pure returns (uint256) {
+        int256 delta =  int(_num1) - int(_num2);
+        uint256 absDelta = (delta < 0) ? uint256(delta*(-1)) : uint256(delta);
+
+        return absDelta;
+    }
+
+
 
 }
 
@@ -41,12 +61,13 @@ interface IRBOwner {
     returns (bytes32 id,uint256 initialPubId );
 }
 
- contract hub is utils, lensInteraction, IRBOwner, ERC20Interaction{
+ contract hub is utils, lensInteraction, IRBOwner, ERC20Interaction, ComparationLogic {
 
     constructor ( address _lens) {
         governance = msg.sender;
         treasury = address(this);
-        //waitForAutomaticResolution = 60*60*24*7*52; //1 year not implemented yet
+        oracleTimestampTolerance = 60*60*10;
+        //waitForAutomaticResolution = 60*60*24*7*52; //1 year. Functionality not implemented yet
         lens = ILensHub(_lens);
 
     }
@@ -115,5 +136,32 @@ interface IRBOwner {
 
     }
 
-}
+    function resolveByOracle(
+        bytes32 _id,
+        uint256 _oracleRoundId,
+        LensDataTypes.CommentData memory _commentData)
+        public
+        canResolve(MapIdToPost[_id], DataTypes.ResolveTypes.ResolveByOracle)
+        isRoundIdOK(_oracleRoundId,MapIdToPost[_id].resolveConditions)
+        checkLensBeforePost(_commentData.profileId)
+        {
+            DataTypes.Post storage ep = MapIdToPost[_id];
+            DataTypes.ResolveConditions storage conditions = ep.resolveConditions;
+            int256 answer = getAnswer(conditions.sourceAddress, _oracleRoundId);
+            
 
+            address sendTo = compare(conditions.valueInt,answer, conditions.operator) ? ep.partyA : ep.partyB;
+            transferERC(ep.amount,ep.currency,sendTo);
+
+            //post to lens as comment to inital post
+           
+            _commentData = createCommentStruct(ep.lensPostInfo, _commentData);
+            uint256 commentId = commentToLens(_commentData);
+
+            ep.resolved = true;
+            emit DataTypes.lensPostCreated(commentId);
+           
+        }
+    
+
+}

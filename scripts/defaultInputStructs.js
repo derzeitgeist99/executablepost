@@ -31,7 +31,8 @@ const resolveByOwner = {
     "metric": "number of puddles",
     "sourceString": "my window",
     "sourceAddress": "0x8464135c8F25Da09e49BC8782676a84730C318bC",
-    "valueUint": 3,
+    "timestamp": 0,
+    "valueInt": 3,
     "operator": 1
 
 }
@@ -40,8 +41,9 @@ const resolveByOracle = {
     "resolveType": 1,
     "metric": "ETHUSD",
     "sourceString": "",
-    "sourceAddress": "0x8464135c8F25Da09e49BC8782676a84730C318bC",
-    "valueUint": 5000,
+    "sourceAddress": addressBook.chainlink.mumbai.ETHUSD,
+    "timestamp": 1652700000,
+    "valueInt": 5000,
     "operator": 1
 
 }
@@ -61,7 +63,6 @@ const createPostStruct = (user, partyA, partyB, resolveType = "ResolveByOwner") 
             resolveConditions = resolveByOwner
             break;
     }
-
 
     postStruct = {
 

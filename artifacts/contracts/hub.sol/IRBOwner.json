@@ -76,8 +76,13 @@
                 },
                 {
                   "internalType": "uint256",
-                  "name": "valueUint",
+                  "name": "timestamp",
                   "type": "uint256"
+                },
+                {
+                  "internalType": "int256",
+                  "name": "valueInt",
+                  "type": "int256"
                 },
                 {
                   "internalType": "enum DataTypes.ResolveOperators",

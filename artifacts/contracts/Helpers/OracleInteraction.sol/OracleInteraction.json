@@ -1,0 +1,10 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "OracleInteraction",
+  "sourceName": "contracts/Helpers/OracleInteraction.sol",
+  "abi": [],
+  "bytecode": "0x6080604052348015600f57600080fd5b50603f80601d6000396000f3fe6080604052600080fdfea26469706673582212202c5b6f168bc53a0b777f7388c3b6c35dfcc7e9814c34f37f1e303d3de3668f9364736f6c634300080a0033",
+  "deployedBytecode": "0x6080604052600080fdfea26469706673582212202c5b6f168bc53a0b777f7388c3b6c35dfcc7e9814c34f37f1e303d3de3668f9364736f6c634300080a0033",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

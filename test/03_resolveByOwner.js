@@ -55,7 +55,7 @@ describe("Testing resovleByOwner Happy Path", async () => {
 
         //**************************<<<< Create Post >>>>**************************
 
-        postInputStruct = createPostStruct(user, partyA, partyB)
+        postInputStruct = createPostStruct(user, partyA, partyB, resolveType = "ResolveByOwner")
         tx = await dai.connect(user).approve(hub.address, postInputStruct.amount);
         // why this isnot waiting?
         await tx.wait()
@@ -110,7 +110,7 @@ describe("Testing resolveByOwner UnHappy Path", async () => {
         await lensSetDispatcher(hub.address)
 
         //create post
-        postInputStruct = createPostStruct(user, partyA, partyB)
+        postInputStruct = createPostStruct(user, partyA, partyB, resolveType = "ResolveByOwner")
         let tx = await dai.connect(user).approve(hub.address, postInputStruct.amount);
         receipt = await tx.wait();
         ({ postId, postStruct } = await newPost(hub, user, postInputStruct, lensPostStruct))

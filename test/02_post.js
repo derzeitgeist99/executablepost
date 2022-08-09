@@ -40,7 +40,7 @@ describe("Testing post", async () => {
 
     it("Should create post using function", async () => {
 
-        postInputStruct = createPostStruct(user, partyA, partyB)
+        postInputStruct = createPostStruct(user, partyA, partyB, resolveType = "ResolveByOwner")
         tx = await dai.connect(user).approve(hub.address, postInputStruct.amount)
         const initialBalances = await getDAIBalances(dai, [user.address, hub.address]);
         ({ postId, postStruct } = await newPost(hub, user, postInputStruct, lensPostStruct))
