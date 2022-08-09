@@ -1,0 +1,458 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "IExecutablePost",
+  "sourceName": "contracts/Interfaces/IExecutablePost.sol",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "_id",
+          "type": "bytes32"
+        }
+      ],
+      "name": "getPostById",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "partyA",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "partyB",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "resolver",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "resolveAfter",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "automaticallyResolveAfter",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "currency",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "resolved",
+              "type": "bool"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "enum DataTypes.ResolveTypes",
+                  "name": "resolveType",
+                  "type": "uint8"
+                },
+                {
+                  "internalType": "string",
+                  "name": "metric",
+                  "type": "string"
+                },
+                {
+                  "internalType": "string",
+                  "name": "sourceString",
+                  "type": "string"
+                },
+                {
+                  "internalType": "address",
+                  "name": "sourceAddress",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "timestamp",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "int256",
+                  "name": "valueInt",
+                  "type": "int256"
+                },
+                {
+                  "internalType": "enum DataTypes.ResolveOperators",
+                  "name": "operator",
+                  "type": "uint8"
+                }
+              ],
+              "internalType": "struct DataTypes.ResolveConditions",
+              "name": "resolveConditions",
+              "type": "tuple"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint256",
+                  "name": "profileId",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "initialPubId",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "resolvingPubId",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct DataTypes.LensPostInfo",
+              "name": "lensPostInfo",
+              "type": "tuple"
+            }
+          ],
+          "internalType": "struct DataTypes.Post",
+          "name": "",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "partyA",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "partyB",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "resolver",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "resolveAfter",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "automaticallyResolveAfter",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "currency",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "resolved",
+              "type": "bool"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "enum DataTypes.ResolveTypes",
+                  "name": "resolveType",
+                  "type": "uint8"
+                },
+                {
+                  "internalType": "string",
+                  "name": "metric",
+                  "type": "string"
+                },
+                {
+                  "internalType": "string",
+                  "name": "sourceString",
+                  "type": "string"
+                },
+                {
+                  "internalType": "address",
+                  "name": "sourceAddress",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "timestamp",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "int256",
+                  "name": "valueInt",
+                  "type": "int256"
+                },
+                {
+                  "internalType": "enum DataTypes.ResolveOperators",
+                  "name": "operator",
+                  "type": "uint8"
+                }
+              ],
+              "internalType": "struct DataTypes.ResolveConditions",
+              "name": "resolveConditions",
+              "type": "tuple"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint256",
+                  "name": "profileId",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "initialPubId",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "resolvingPubId",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct DataTypes.LensPostInfo",
+              "name": "lensPostInfo",
+              "type": "tuple"
+            }
+          ],
+          "internalType": "struct DataTypes.Post",
+          "name": "_post",
+          "type": "tuple"
+        },
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "profileId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "string",
+              "name": "contentURI",
+              "type": "string"
+            },
+            {
+              "internalType": "address",
+              "name": "collectModule",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "collectModuleInitData",
+              "type": "bytes"
+            },
+            {
+              "internalType": "address",
+              "name": "referenceModule",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "referenceModuleInitData",
+              "type": "bytes"
+            }
+          ],
+          "internalType": "struct DataTypes.PostData",
+          "name": "_lensPost",
+          "type": "tuple"
+        }
+      ],
+      "name": "post",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "id",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "uint256",
+          "name": "initialPubId",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "_id",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_oracleRoundId",
+          "type": "uint256"
+        },
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "profileId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "string",
+              "name": "contentURI",
+              "type": "string"
+            },
+            {
+              "internalType": "uint256",
+              "name": "profileIdPointed",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "pubIdPointed",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "referenceModuleData",
+              "type": "bytes"
+            },
+            {
+              "internalType": "address",
+              "name": "collectModule",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "collectModuleInitData",
+              "type": "bytes"
+            },
+            {
+              "internalType": "address",
+              "name": "referenceModule",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "referenceModuleInitData",
+              "type": "bytes"
+            }
+          ],
+          "internalType": "struct DataTypes.CommentData",
+          "name": "_commentData",
+          "type": "tuple"
+        }
+      ],
+      "name": "resolveByOracle",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "_id",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "uint8",
+          "name": "_resultPartyA",
+          "type": "uint8"
+        },
+        {
+          "internalType": "uint8",
+          "name": "_resultPartyB",
+          "type": "uint8"
+        },
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "profileId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "string",
+              "name": "contentURI",
+              "type": "string"
+            },
+            {
+              "internalType": "uint256",
+              "name": "profileIdPointed",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "pubIdPointed",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "referenceModuleData",
+              "type": "bytes"
+            },
+            {
+              "internalType": "address",
+              "name": "collectModule",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "collectModuleInitData",
+              "type": "bytes"
+            },
+            {
+              "internalType": "address",
+              "name": "referenceModule",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "referenceModuleInitData",
+              "type": "bytes"
+            }
+          ],
+          "internalType": "struct DataTypes.CommentData",
+          "name": "_commentData",
+          "type": "tuple"
+        }
+      ],
+      "name": "resolveByOwner",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

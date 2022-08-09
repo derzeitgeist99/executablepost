@@ -32,6 +32,6 @@ const fundAllWithDai = async () => {
 
 //module.exports = { fundAllWithDai, deployDai }
 
-//deployDai()
+//deployDai();
 //fundAllWithDai()
 //npx hardhat run Scripts/fundAllwithDAI.js --network localhost

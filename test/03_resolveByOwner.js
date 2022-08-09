@@ -118,91 +118,113 @@ describe("Testing resolveByOwner UnHappy Path", async () => {
 
     })
 
-    it("Should reject because executablePostNotFound()", async () => {
+    it("Should reject because ExecutablePostNotFound()", async () => {
+      let resolutionInputs = [...defaultResolutionInputs];
+      resolutionInputs[0] = keccak256(
+        defaultAbiCoder.encode(["string"], ["IdontExist"])
+      );
 
-        let resolutionInputs = [...defaultResolutionInputs]
-        resolutionInputs[0] = keccak256(defaultAbiCoder.encode(["string"], ["IdontExist"]))
+      await expect(
+        hub.connect(user).resolveByOwner(...resolutionInputs)
+      ).to.be.rejectedWith("ExecutablePostNotFound");
+    });
+    it("Should reject because YouAreNotResolverOfExecutablePost()", async () => {
+      let resolutionInputs = [...defaultResolutionInputs];
+      await expect(
+        hub.connect(partyA).resolveByOwner(...resolutionInputs)
+      ).to.be.rejectedWith("YouAreNotResolverOfExecutablePost");
+    });
+    it("Should reject because PartyAPlusPartyBIsNot100()", async () => {
+      //Too high
+      let resolutionInputs = [...defaultResolutionInputs];
+      resolutionInputs[1] = 51;
+      resolutionInputs[2] = 50;
+      await expect(
+        hub.connect(user).resolveByOwner(...resolutionInputs)
+      ).to.be.rejectedWith("PartyAPlusPartyBIsNot100");
 
-        await expect(hub.connect(user).resolveByOwner(...resolutionInputs))
-            .to.be.rejectedWith("executablePostNotFound")
-    })
-    it("Should reject because youAreNotResolverOfExecutablePost()", async () => {
-
-        let resolutionInputs = [...defaultResolutionInputs]
-        await expect(hub.connect(partyA).resolveByOwner(...resolutionInputs))
-            .to.be.rejectedWith("youAreNotResolverOfExecutablePost")
-    })
-    it("Should reject because partyAPlusPartyBIsNot100()", async () => {
-        //Too high
-        let resolutionInputs = [...defaultResolutionInputs]
-        resolutionInputs[1] = 51;
-        resolutionInputs[2] = 50;
-        await expect(hub.connect(user).resolveByOwner(...resolutionInputs))
-            .to.be.rejectedWith("partyAPlusPartyBIsNot100")
-
-        //Too Low
-        resolutionInputs = [...defaultResolutionInputs]
-        resolutionInputs[1] = 49;
-        resolutionInputs[2] = 50;
-        await expect(hub.connect(user).resolveByOwner(...resolutionInputs))
-            .to.be.rejectedWith("partyAPlusPartyBIsNot100")
-
-
-    })
+      //Too Low
+      resolutionInputs = [...defaultResolutionInputs];
+      resolutionInputs[1] = 49;
+      resolutionInputs[2] = 50;
+      await expect(
+        hub.connect(user).resolveByOwner(...resolutionInputs)
+      ).to.be.rejectedWith("PartyAPlusPartyBIsNot100");
+    });
     it("should reject because LensProfile does not exist, throws: TokenDoesNotExist()", async () => {
-        //need a deep copy here since I am changing nested level...
-        let resolutionInputs = JSON.parse(JSON.stringify(defaultResolutionInputs))
-        resolutionInputs[3].profileId = 234
+      //need a deep copy here since I am changing nested level...
+      let resolutionInputs = JSON.parse(
+        JSON.stringify(defaultResolutionInputs)
+      );
+      resolutionInputs[3].profileId = 234;
 
-        await expect(hub.connect(user).resolveByOwner(...resolutionInputs))
-            .to.be.rejectedWith("TokenDoesNotExist")
+      await expect(
+        hub.connect(user).resolveByOwner(...resolutionInputs)
+      ).to.be.rejectedWith("TokenDoesNotExist");
+    });
+    it("Should reject because CannotUseThisFunctionToResolve()", async () => {
+      // here I need to post with different resolveType. Creating deep copy
+      let newPostInputStruct = JSON.parse(JSON.stringify(postInputStruct));
+      newPostInputStruct.resolveConditions.resolveType = 1;
+      tx = await dai
+        .connect(user)
+        .approve(hub.address, newPostInputStruct.amount);
+      await tx.wait();
+      ({ postId, postStruct } = await newPost(
+        hub,
+        user,
+        newPostInputStruct,
+        lensPostStruct
+      ));
 
-    })
-    it("Should reject because cannotUseThisFunctionToResolve()", async () => {
+      let resolutionInputs = defaultResolutionInputs;
+      resolutionInputs[0] = postId;
+      await expect(
+        hub.connect(user).resolveByOwner(...resolutionInputs)
+      ).to.be.rejectedWith("CannotUseThisFunctionToResolve");
+    });
+    it("Should reject because YouTryToResolveTooEarly()", async () => {
+      // here I need to post with different resolveType.
+      let newPostInputStruct = { ...postInputStruct };
+      newPostInputStruct.resolveAfter = 2 * 1000 * 1000 * 1000;
 
-        // here I need to post with different resolveType. Creating deep copy
-        let newPostInputStruct = JSON.parse(JSON.stringify(postInputStruct))
-        newPostInputStruct.resolveConditions.resolveType = 1
-        tx = await dai.connect(user).approve(hub.address, newPostInputStruct.amount);
-        await tx.wait();
-        ({ postId, postStruct } = await newPost(hub, user, newPostInputStruct, lensPostStruct))
+      tx = await dai
+        .connect(user)
+        .approve(hub.address, newPostInputStruct.amount);
+      await tx.wait();
+      ({ postId, postStruct } = await newPost(
+        hub,
+        user,
+        newPostInputStruct,
+        lensPostStruct
+      ));
 
-        let resolutionInputs = defaultResolutionInputs
-        resolutionInputs[0] = postId
-        await expect(hub.connect(user).resolveByOwner(...resolutionInputs))
-            .to.be.rejectedWith("cannotUseThisFunctionToResolve")
+      let resolutionInputs = [...defaultResolutionInputs];
+      resolutionInputs[0] = postId;
+      await expect(
+        hub.connect(user).resolveByOwner(...resolutionInputs)
+      ).to.be.rejectedWith("YouTryToResolveTooEarly");
+    });
+    it("Should reject because AlreadyResolved()", async () => {
+      let newPostInputStruct = { ...postInputStruct };
+      tx = await dai
+        .connect(user)
+        .approve(hub.address, newPostInputStruct.amount);
+      await tx.wait();
+      ({ postId, postStruct } = await newPost(
+        hub,
+        user,
+        newPostInputStruct,
+        lensPostStruct
+      ));
 
-
-    })
-    it("Should reject because youTryToResolveTooEarly()", async () => {
-        // here I need to post with different resolveType. 
-        let newPostInputStruct = { ...postInputStruct }
-        newPostInputStruct.resolveAfter = 2 * 1000 * 1000 * 1000
-
-        tx = await dai.connect(user).approve(hub.address, newPostInputStruct.amount);
-        await tx.wait();
-        ({ postId, postStruct } = await newPost(hub, user, newPostInputStruct, lensPostStruct))
-
-        let resolutionInputs = [...defaultResolutionInputs]
-        resolutionInputs[0] = postId
-        await expect(hub.connect(user).resolveByOwner(...resolutionInputs))
-            .to.be.rejectedWith("youTryToResolveTooEarly")
-
-    })
-    it("Should reject because alreadyResolved()", async () => {
-        let newPostInputStruct = { ...postInputStruct }
-        tx = await dai.connect(user).approve(hub.address, newPostInputStruct.amount);
-        await tx.wait();
-        ({ postId, postStruct } = await newPost(hub, user, newPostInputStruct, lensPostStruct))
-
-        let resolutionInputs = [...defaultResolutionInputs]
-        resolutionInputs[0] = postId
-        tx = await hub.connect(user).resolveByOwner(...resolutionInputs)
-        tx.wait()
-        await expect(hub.connect(user).resolveByOwner(...resolutionInputs)).to.be.rejectedWith("alreadyResolved")
-
-    }
-
-    )
+      let resolutionInputs = [...defaultResolutionInputs];
+      resolutionInputs[0] = postId;
+      tx = await hub.connect(user).resolveByOwner(...resolutionInputs);
+      tx.wait();
+      await expect(
+        hub.connect(user).resolveByOwner(...resolutionInputs)
+      ).to.be.rejectedWith("AlreadyResolved");
+    });
     it("Should test transfer from and transfer")
 })

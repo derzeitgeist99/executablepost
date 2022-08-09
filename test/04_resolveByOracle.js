@@ -95,106 +95,144 @@ describe("Testing resovleByOracle Happy Path", async () => {
 })
 
 describe("Testing resolveByOracle UnHappy Path", async () => {
+  before(async () => {
+    ({ hub } = await deployAllContracts());
+    ({ governance, user, partyA, partyB } = await getNamedSigners());
+    dai = new ethers.Contract(
+      addressBook.ERC20.local.DAI,
+      DaiAbi.abi,
+      governance
+    );
 
+    //setUp disptacher (ie contract that can post on behalf of profile)
+    await lensSetDispatcher(hub.address);
 
-    before(async () => {
-        ({ hub } = await deployAllContracts());
-        ({ governance, user, partyA, partyB } = await getNamedSigners());
-        dai = new ethers.Contract(addressBook.ERC20.local.DAI, DaiAbi.abi, governance)
+    //create post
+    postInputStruct = createPostStruct(
+      user,
+      partyA,
+      partyB,
+      (resolveType = "ResolveByOracle")
+    );
+    let tx = await dai
+      .connect(user)
+      .approve(hub.address, postInputStruct.amount);
+    receipt = await tx.wait();
+    ({ postId, postStruct } = await newPost(
+      hub,
+      user,
+      postInputStruct,
+      lensPostStruct
+    ));
+    defaultResolutionInputs[0] = postId;
+  });
 
-        //setUp disptacher (ie contract that can post on behalf of profile)
-        await lensSetDispatcher(hub.address)
+  it("Should reject because ExecutablePostNotFound()", async () => {
+    let resolutionInputs = [...defaultResolutionInputs];
+    resolutionInputs[0] = keccak256(
+      defaultAbiCoder.encode(["string"], ["IdontExist"])
+    );
 
-        //create post
-        postInputStruct = createPostStruct(user, partyA, partyB, resolveType = "ResolveByOracle")
-        let tx = await dai.connect(user).approve(hub.address, postInputStruct.amount);
-        receipt = await tx.wait();
-        ({ postId, postStruct } = await newPost(hub, user, postInputStruct, lensPostStruct))
-        defaultResolutionInputs[0] = postId
+    await expect(
+      hub.connect(user).resolveByOracle(...resolutionInputs)
+    ).to.be.rejectedWith("ExecutablePostNotFound");
+  });
+  it("Should reject because YouAreNotResolverOfExecutablePost()", async () => {
+    let resolutionInputs = [...defaultResolutionInputs];
+    await expect(
+      hub.connect(partyA).resolveByOracle(...resolutionInputs)
+    ).to.be.rejectedWith("YouAreNotResolverOfExecutablePost");
+  });
 
-    })
+  it("should reject because LensProfile does not exist, throws: TokenDoesNotExist()", async () => {
+    //need a deep copy here since I am changing nested level...
+    let resolutionInputs = [];
+    resolutionInputs.push(
+      JSON.parse(JSON.stringify(defaultResolutionInputs[0]))
+    );
+    resolutionInputs.push(BigInt("18446744073709591500"));
+    resolutionInputs.push(
+      JSON.parse(JSON.stringify(defaultResolutionInputs[2]))
+    );
+    resolutionInputs.push(
+      JSON.parse(JSON.stringify(defaultResolutionInputs[3]))
+    );
 
-    it("Should reject because executablePostNotFound()", async () => {
+    resolutionInputs[2].profileId = 1234;
 
-        let resolutionInputs = [...defaultResolutionInputs]
-        resolutionInputs[0] = keccak256(defaultAbiCoder.encode(["string"], ["IdontExist"]))
+    await expect(
+      hub.connect(user).resolveByOracle(...resolutionInputs)
+    ).to.be.rejectedWith("TokenDoesNotExist");
+  });
+  it("Should reject because CannotUseThisFunctionToResolve()", async () => {
+    // here I need to post with different resolveType. Creating deep copy
+    let newPostInputStruct = JSON.parse(JSON.stringify(postInputStruct));
+    newPostInputStruct.resolveConditions.resolveType = 0;
+    tx = await dai
+      .connect(user)
+      .approve(hub.address, newPostInputStruct.amount);
+    await tx.wait();
+    ({ postId, postStruct } = await newPost(
+      hub,
+      user,
+      newPostInputStruct,
+      lensPostStruct
+    ));
 
-        await expect(hub.connect(user).resolveByOracle(...resolutionInputs))
-            .to.be.rejectedWith("executablePostNotFound")
-    })
-    it("Should reject because youAreNotResolverOfExecutablePost()", async () => {
+    let resolutionInputs = defaultResolutionInputs;
+    resolutionInputs[0] = postId;
+    await expect(
+      hub.connect(user).resolveByOracle(...resolutionInputs)
+    ).to.be.rejectedWith("CannotUseThisFunctionToResolve");
+  });
+  it("Should reject because YouTryToResolveTooEarly()", async () => {
+    // here I need to post with different resolveType.
+    let newPostInputStruct = { ...postInputStruct };
+    newPostInputStruct.resolveAfter = 2 * 1000 * 1000 * 1000;
 
-        let resolutionInputs = [...defaultResolutionInputs]
-        await expect(hub.connect(partyA).resolveByOracle(...resolutionInputs))
-            .to.be.rejectedWith("youAreNotResolverOfExecutablePost")
-    })
+    tx = await dai
+      .connect(user)
+      .approve(hub.address, newPostInputStruct.amount);
+    await tx.wait();
+    ({ postId, postStruct } = await newPost(
+      hub,
+      user,
+      newPostInputStruct,
+      lensPostStruct
+    ));
 
-    it("should reject because LensProfile does not exist, throws: TokenDoesNotExist()", async () => {
-        //need a deep copy here since I am changing nested level...
-        let resolutionInputs = []
-        resolutionInputs.push(JSON.parse(JSON.stringify(defaultResolutionInputs[0])))
-        resolutionInputs.push(BigInt("18446744073709591500"))
-        resolutionInputs.push(JSON.parse(JSON.stringify(defaultResolutionInputs[2])))
-        resolutionInputs.push(JSON.parse(JSON.stringify(defaultResolutionInputs[3])))
+    let resolutionInputs = [...defaultResolutionInputs];
+    resolutionInputs[0] = postId;
+    await expect(
+      hub.connect(user).resolveByOracle(...resolutionInputs)
+    ).to.be.rejectedWith("YouTryToResolveTooEarly");
+  });
+  it("Should reject because AlreadyResolved()", async () => {
+    let newPostInputStruct = { ...postInputStruct };
+    tx = await dai
+      .connect(user)
+      .approve(hub.address, newPostInputStruct.amount);
+    await tx.wait();
+    ({ postId, postStruct } = await newPost(
+      hub,
+      user,
+      newPostInputStruct,
+      lensPostStruct
+    ));
 
-        resolutionInputs[2].profileId = 1234
-
-
-        await expect(hub.connect(user).resolveByOracle(...resolutionInputs))
-            .to.be.rejectedWith("TokenDoesNotExist")
-
-    })
-    it("Should reject because cannotUseThisFunctionToResolve()", async () => {
-
-        // here I need to post with different resolveType. Creating deep copy
-        let newPostInputStruct = JSON.parse(JSON.stringify(postInputStruct))
-        newPostInputStruct.resolveConditions.resolveType = 0
-        tx = await dai.connect(user).approve(hub.address, newPostInputStruct.amount);
-        await tx.wait();
-        ({ postId, postStruct } = await newPost(hub, user, newPostInputStruct, lensPostStruct))
-
-        let resolutionInputs = defaultResolutionInputs
-        resolutionInputs[0] = postId
-        await expect(hub.connect(user).resolveByOracle(...resolutionInputs))
-            .to.be.rejectedWith("cannotUseThisFunctionToResolve")
-
-
-    })
-    it("Should reject because youTryToResolveTooEarly()", async () => {
-        // here I need to post with different resolveType. 
-        let newPostInputStruct = { ...postInputStruct }
-        newPostInputStruct.resolveAfter = 2 * 1000 * 1000 * 1000
-
-        tx = await dai.connect(user).approve(hub.address, newPostInputStruct.amount);
-        await tx.wait();
-        ({ postId, postStruct } = await newPost(hub, user, newPostInputStruct, lensPostStruct))
-
-        let resolutionInputs = [...defaultResolutionInputs]
-        resolutionInputs[0] = postId
-        await expect(hub.connect(user).resolveByOracle(...resolutionInputs))
-            .to.be.rejectedWith("youTryToResolveTooEarly")
-
-    })
-    it("Should reject because alreadyResolved()", async () => {
-        let newPostInputStruct = { ...postInputStruct }
-        tx = await dai.connect(user).approve(hub.address, newPostInputStruct.amount);
-        await tx.wait();
-        ({ postId, postStruct } = await newPost(hub, user, newPostInputStruct, lensPostStruct))
-
-        let resolutionInputs = [...defaultResolutionInputs]
-        resolutionInputs[0] = postId
-        tx = await hub.connect(user).resolveByOracle(...resolutionInputs)
-        tx.wait()
-        await expect(hub.connect(user).resolveByOracle(...resolutionInputs)).to.be.rejectedWith("alreadyResolved")
-
-    }
-
-    )
-    it("Should test transfer from and transfer")
-})
+    let resolutionInputs = [...defaultResolutionInputs];
+    resolutionInputs[0] = postId;
+    tx = await hub.connect(user).resolveByOracle(...resolutionInputs);
+    tx.wait();
+    await expect(
+      hub.connect(user).resolveByOracle(...resolutionInputs)
+    ).to.be.rejectedWith("AlreadyResolved");
+  });
+  it("Should test transfer from and transfer");
+});
 
 describe("Testing oracleSpecific unHappyPath cases", async () => {
-    it("Should reject because timestampDeltaGreaterThanTolerance()")
-    it("Should reject because oracleError(). Wrong oracle address")
-    it("Should reject because oracleError(). Wrong roundId")
-})
+  it("Should reject because TimestampDeltaGreaterThanTolerance()");
+  it("Should reject because OracleError(). Wrong oracle address");
+  it("Should reject because OracleError(). Wrong roundId");
+});

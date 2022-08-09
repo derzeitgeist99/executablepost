@@ -31,7 +31,7 @@ async function deployContract(name, constructor = [], print = false, signer = fa
 async function deployAllContracts() {
 
 
-    hub = await deployContract("hub", [lensHubAddr])
+    hub = await deployContract("ExecutablePost", [lensHubAddr])
 
     return { hub }
 

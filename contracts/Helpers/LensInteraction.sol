@@ -6,27 +6,35 @@ import {ILensHub, DataTypes as LensDataTypes} from "@aave/lens-protocol/contract
 import {Errors as LensErrors} from "@aave/lens-protocol/contracts/libraries/Errors.sol";
 import {DataTypes} from "./DataTypes.sol";
 
-contract lensInteraction {
+/**
+ * @title LensInteraction
+ * @author derZeitgeist
+ *
+ * @notice All logic that interacts with Lens Protocol is here. The idea_ is that we forward the Post information to Lens.
+ */
+
+contract LensInteraction {
     ILensHub lens;
 
-    //modifiers
-    modifier checkLensBeforePost (uint256 _profileId) {
-        //Check if handle exists
+    modifier _checkLensBeforePost (uint256 _profileId) {
+        /// @dev Check if handle exists. 
         bytes memory handle = bytes(lens.getHandle(_profileId));
         if (handle.length == 0) {revert LensErrors.TokenDoesNotExist();}
 
-        //Check if contract is whitelisted as dispatcher
+        /// @dev Check if contract is whitelisted as dispatcher. Dispatcher is contract that post on behalf of user. 
+        /// See more here https://docs.lens.xyz/docs/functions#setdispatcher
+        /// @custom:later not sure how the address(this) would behave in case of proxy...
         address dispatcher = lens.getDispatcher(_profileId);
         if (dispatcher != address(this)) {revert LensErrors.NotDispatcher();}
         _;
 
     }
 
-    function postToLens(LensDataTypes.PostData calldata _lensPost) internal returns(uint256) {
+    function _postToLens(LensDataTypes.PostData calldata _lensPost) internal returns(uint256) {
         return lens.post(_lensPost);
     }
 
-    function createCommentStruct(DataTypes.LensPostInfo storage _originalLensPost, LensDataTypes.CommentData memory _commentData) internal returns (LensDataTypes.CommentData memory){
+    function _createCommentStruct(DataTypes.LensPostInfo storage _originalLensPost, LensDataTypes.CommentData memory _commentData) internal returns (LensDataTypes.CommentData memory){
         _commentData.profileIdPointed = _originalLensPost.profileId;
         _commentData.pubIdPointed = _originalLensPost.initialPubId;
 
@@ -34,7 +42,7 @@ contract lensInteraction {
 
     }
 
-     function commentToLens(LensDataTypes.CommentData memory _commentData) internal returns(uint256) {
+     function _commentToLens(LensDataTypes.CommentData memory _commentData) internal returns(uint256) {
         return lens.comment(_commentData);
 
     }
