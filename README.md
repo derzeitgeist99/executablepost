@@ -15,46 +15,13 @@ Executable post is a post with smart contract in one. We don't know now what is 
 - a personal feedback loop
 - a transfer to charity
 
-### Prototype: Self Evaluating bet
+## Implementation
 
-As a first step we will implement a simple logic:
+Contract is deployed on Polygon Mumbai testnet here: 
 
-1) create a post with your idea, and how you will evaluate it.
-2) together with the post transfer some ETH into a contract and define beneficiary
-3) after some time passes evaluate your claim. If you evaluate to true you get your money back. Otherwise the beneficiary will get the money.
 
-## How
 
-Let's build this step by step
-
-➕ **Prototype**: Lens API + Stand Alone contract
-
-➕➕ Convert to Lens Protocol Module
-
-➕➕➕ Add Oracles to evaluate contract
-
-➕➕➕➕ Add more smart contract resolution modes (followers voting, ?)
-
-## Prototope: Definition of Done
-
-### Elements
-
-- Front End
-- Smart Contract
-- Connection to Lens API to post
-
-### Front End Functionality (visible to user)
-
-- Post
-  - Input: Message, Beneficiary Address, Benefactor Address, TimeFrame, Amount (DAI)
-  - Result: Post is visible on Lenster, contract is saved
-- Resolve
-  - Input: Beneficiary or Benefactor, message
-  - Result: Comment with the result is visible on Lenster, money is transferred
-
-### Contract structure
-<https://drive.google.com/file/d/1re4p-Wdj83DGirfMm1PanCWX833IBRNG/view?usp=sharing>
 
 
 ### Documentation
-<div><object data="docs/IExecutablePost.md"></object></div>
+
