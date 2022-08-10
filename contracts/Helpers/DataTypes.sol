@@ -5,7 +5,7 @@ import 'hardhat/console.sol';
 
 
 library DataTypes {
-//**************************<<<< Errors >>>>**************************"
+//**************************<<<< Errors >>>>**************************
     error UserNotAllowed (string);
     error AmountMustBeGreaterThanZero ();
     error InsufficientBalance(uint balance, uint required);
@@ -24,14 +24,14 @@ library DataTypes {
     error OracleError(string _message);
 
    
-//**************************<<<< Events >>>>**************************"
+//**************************<<<< Events >>>>**************************
 
     event IdCreated (bytes32  indexed _id);
     event ContractAddressChanged (address indexed _newAddress);
     event LensPostCreated (uint256 indexed _lensPostId);
 
 
-//**************************<<<< Enums >>>>**************************"
+//**************************<<<< Enums >>>>**************************
 /// @dev Represents logic of resolution. Every enum items must have own resolution function
     enum ResolveTypes {
         ResolveByOwner,
@@ -46,10 +46,10 @@ library DataTypes {
     }
    
 
-//**************************<<<< Structs >>>>**************************"
+//**************************<<<< Structs >>>>**************************
 
-/**
-* @notice this stores all data we need for future resolution of the contract
+/** 
+@notice this stores all data we need for future resolution of the contract
 * @param partyA Address of party A, here ERC20 tokens will be transfered should party A benefit from resolution. Could be any address, even the resolver or owner. Defined by user.
 * @param partyB Address of party B, here ERC20 tokens will be transfered should party B benefit from resolution. Could be any address, even the resolver or owner. Defined by user.
 * @param owner Address of someone, who started the Post. Set in contract = msg.sender
@@ -61,7 +61,8 @@ library DataTypes {
 * @param resolved By default set to false. Changes to true after resolution function has been called. If this is true resolution functions will revert. 
 * @param resolveCondition How do you want to have this resolved. Defined by user.
 * @param lensPostInfo Here we store details neded for Lens Protocol interaction. 
-* @custom:later Now I see I am using this as state variable, but also as a vehicle to collect input from user. Therefore user might be confused / tempted to fill own value. (eg owner)
+* @dev tada 
+* Now I see I am using this as state variable, but also as a vehicle to collect input from user. Therefore user might be confused / tempted to fill own value. (eg owner)
 */
     struct Post {
         address partyA;

@@ -54,3 +54,7 @@ Let's build this step by step
 
 ### Contract structure
 <https://drive.google.com/file/d/1re4p-Wdj83DGirfMm1PanCWX833IBRNG/view?usp=sharing>
+
+
+### Documentation
+<div><object data="docs/IExecutablePost.md"></object></div>
