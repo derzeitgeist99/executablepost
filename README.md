@@ -15,17 +15,20 @@ Executable post is a post with smart contract in one. We don't know now what is 
 - a personal feedback loop
 - a transfer to charity
 
-https://github.com/derzeitgeist99/executablepost/blob/main/docs/QuickExplainer.mp4
 
 https://user-images.githubusercontent.com/11892101/183889081-0d489bf2-cb04-429a-9aa1-106625e71dd1.mp4
 
 
-## Implementation
+## Useful notes
 
-Contract is deployed on Polygon Mumbai testnet here: 
+- Contract is deployed on Polygon Mumbai testnet here: 
 
+- Here is Readme for the [interface](docs/IExecutablePost.md)
 
+- I cannot get a nice NatSpec for Library, so read about `DataTypes.Post` directly in the [contract](contracts/Helpers/DataTypes.sol)
 
+- Since my contract is not whitelisted on Lens, I forked it. I am calling it here: 
 
-### Documentation
+- You can also lock any ERC20 tokens. 
 
+- There are also multiple [tests](test) available.
