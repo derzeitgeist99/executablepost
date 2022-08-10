@@ -16,6 +16,10 @@ Executable post is a post with smart contract in one. We don't know now what is 
 - a transfer to charity
 
 https://github.com/derzeitgeist99/executablepost/blob/main/docs/QuickExplainer.mp4
+
+https://user-images.githubusercontent.com/11892101/183889081-0d489bf2-cb04-429a-9aa1-106625e71dd1.mp4
+
+
 ## Implementation
 
 Contract is deployed on Polygon Mumbai testnet here: 
