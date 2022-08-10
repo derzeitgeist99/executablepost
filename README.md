@@ -15,10 +15,10 @@ Executable post is a post with smart contract in one. We don't know now what is 
 - a personal feedback loop
 - a transfer to charity
 
+https://github.com/derzeitgeist99/executablepost/blob/main/docs/QuickExplainer.mp4
 ## Implementation
 
 Contract is deployed on Polygon Mumbai testnet here: 
-
 
 
 
